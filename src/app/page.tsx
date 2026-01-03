@@ -67,8 +67,7 @@ export default function Home() {
                         <span className="text-schematic-accent">Alex Mitelman</span>
                       </h1>
                       <p className="text-xl md:text-2xl text-schematic-secondary max-w-xl font-mono leading-relaxed border-l-4 border-schematic-accent pl-6">
-                        Backend DevOps & Embedded Engineer.<br />
-                        Building resilient systems that bridge the physical and digital worlds.
+                        Software Engineer specializing in information and computation assurance | Graduated Dec 2025
                       </p>
                     </div>
 
