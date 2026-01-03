@@ -35,13 +35,11 @@ export function ThemeManager() {
             `;
 
             document.body.classList.add("blueprint-mode");
-            console.log("Schematic Mode: ON (Style Injected)");
         } else {
             if (styleTag) {
                 styleTag.remove();
             }
             document.body.classList.remove("blueprint-mode");
-            console.log("Schematic Mode: OFF");
         }
     }, [isSchematic]);
 

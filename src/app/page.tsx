@@ -13,7 +13,6 @@ import { EncryptedText } from "@/components/EncryptedText";
 import { TerminalCLI } from "@/components/TerminalCLI";
 import { DataUplink } from "@/components/DataUplink";
 import { KonamiCode } from "@/components/KonamiCode";
-import { ThemeDebugger } from "@/components/ThemeDebugger";
 import { GameOverlay } from "@/components/GameOverlay";
 import { SystemModal } from "@/components/SystemModal";
 import { Mail, Github, Linkedin, FileText, Activity, Box, ChevronRight } from "lucide-react";
@@ -166,7 +165,6 @@ export default function Home() {
 
           <SystemFooter />
           <TerminalCLI />
-          <ThemeDebugger />
           <GameOverlay />
 
           {/* Modals */}
