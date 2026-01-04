@@ -7,6 +7,7 @@ import { cn } from "@/lib/utils";
 import { ProjectDiagram } from "@/components/ProjectDiagram";
 import { HolographicCard } from "@/components/HolographicCard";
 import { DigitalTwin3D } from "@/components/DigitalTwin3D";
+import { CmmSenseVisual } from "@/components/CmmSenseVisual";
 
 export function SmartSearch() {
     const [query, setQuery] = useState("");
@@ -136,11 +137,19 @@ export function SmartSearch() {
                                     {isExpanded && (
                                         <div className="ml-7 animate-in fade-in slide-in-from-top-2 duration-200">
                                             {project.name === "CMM-Sense IoT Device" ? (
-                                                <div
-                                                    className="h-96 w-full border border-schematic-grid/50 rounded-lg overflow-hidden mb-6 relative bg-black/20"
-                                                    onClick={(e) => e.stopPropagation()}
-                                                >
-                                                    <DigitalTwin3D />
+                                                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                                                    {/* Left: 3D Digital Twin */}
+                                                    <div
+                                                        className="h-96 w-full border border-schematic-grid/50 rounded-lg overflow-hidden relative bg-black/20"
+                                                        onClick={(e) => e.stopPropagation()}
+                                                    >
+                                                        <DigitalTwin3D />
+                                                    </div>
+
+                                                    {/* Right: Animation Scene */}
+                                                    <div className="h-96 w-full">
+                                                        <CmmSenseVisual />
+                                                    </div>
                                                 </div>
                                             ) : project.video ? (
                                                 <div className="mb-6 border border-schematic-grid/50 rounded-lg overflow-hidden bg-black/20 max-w-lg">

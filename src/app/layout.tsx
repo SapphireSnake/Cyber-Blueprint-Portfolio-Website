@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { Roboto_Mono, Inter } from "next/font/google";
 import "./globals.css";
-import { ThemeDebugger } from "@/components/ThemeDebugger";
 import { CommandPalette } from "@/components/CommandPalette";
 import { ThemeManager } from "@/components/ThemeManager";
 

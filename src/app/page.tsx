@@ -9,12 +9,13 @@ import { MqttStream } from "@/components/MqttStream";
 import { ProtocolHandshake } from "@/components/ProtocolHandshake";
 import { DigitalTwin } from "@/components/DigitalTwin";
 import { SystemFooter } from "@/components/SystemFooter";
-import { EncryptedText } from "@/components/EncryptedText";
 import { TerminalCLI } from "@/components/TerminalCLI";
 import { DataUplink } from "@/components/DataUplink";
 import { KonamiCode } from "@/components/KonamiCode";
 import { GameOverlay } from "@/components/GameOverlay";
 import { SystemModal } from "@/components/SystemModal";
+import { ExperienceLog } from "@/components/ExperienceLog";
+import { EducationLog } from "@/components/EducationLog";
 import { Mail, Github, Linkedin, FileText, Activity, Box, ChevronRight } from "lucide-react";
 
 import { BootSequence } from "@/components/BootSequence";
@@ -121,8 +122,13 @@ export default function Home() {
                   </div>
                 </div>
               </div>
+
             </section>
 
+
+
+            <ExperienceLog />
+            <EducationLog />
             <SmartSearch />
             <DataUplink />
 

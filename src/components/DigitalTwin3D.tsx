@@ -60,14 +60,7 @@ export function DigitalTwin3D() {
                 CMM-SENSE_DEVICE [ONLINE]
             </div>
 
-            {/* PNG Overlay */}
-            <div className="absolute bottom-2 right-2 z-10 h-80 w-auto p-1 opacity-80 hover:opacity-100 transition-opacity pointer-events-none">
-                <img
-                    src="/Attached-cmm-sense.png"
-                    alt="Device Reference"
-                    className="h-full w-auto object-contain"
-                />
-            </div>
+
 
             <Canvas dpr={[1, 2]} camera={{ fov: 45, position: [0, 8, 8] }} style={{ background: "transparent" }}>
                 <Suspense fallback={<Html center><Loader2 className="w-8 h-8 text-schematic-accent animate-spin" /></Html>}>

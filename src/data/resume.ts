@@ -7,20 +7,34 @@ export const RESUME = {
         linkedin: "linkedin.com/in/alexmitelman",
         location: "New Albany, OH",
     },
-    education: {
-        school: "The Ohio State University",
-        degree: "B.S. in Computer Science Engineering",
-        specialization: "Information and Computation Assurance",
-        gpa: "3.6/4.0",
-        honors: "Dean’s List 2022-2025",
-        graduation: "December 2025",
-    },
+    education: [
+        {
+            school: "The Ohio State University",
+            degree: "B.S. in Computer Science Engineering",
+            specialization: "Specialized in Information and Computation Assurance",
+            gpa: "3.6/4.0",
+            honors: "Summa Cum Laude • Dean’s List 2022-2025",
+            graduation: "December 2025",
+            logo: "/logos/osu.png?v=2",
+        },
+        {
+            school: "New Albany High School",
+            degree: "High School Diploma",
+            specialization: "Engineering & Computer Science",
+            gpa: "4.0/4.0",
+            honors: "Summa Cum Laude",
+            graduation: "May 2022",
+            logo: "/logos/na.jpg",
+        }
+    ],
     experience: [
         {
             company: "QXSOFT - CMM-Manager",
             role: "Computer Science Intern",
             location: "Lewis Center, OH",
             period: "March 2025 – October 2025",
+            logo: "/logos/QxSoft logo.png",
+            stack: ["IoT", "C#", "C++", "React", "BLE"],
             achievements: [
                 "Fully prototyped 3 iterations of a full-stack IoT humiture and collision detection system achieving greater than 120-day battery life through deep sleep and hardware interrupt optimization.",
                 "Engineered a C# companion application for real-time sensor visualization, device configuration, TCP-based data streaming, and designed a custom JSON protocol over BLE/TCP.",
@@ -31,10 +45,23 @@ export const RESUME = {
             ],
         },
         {
+            company: "The Ohio State University",
+            role: "B.S. Computer Science Engineering",
+            location: "Columbus, OH",
+            period: "Aug 2022 – Dec 2025",
+            logo: "/logos/osu.png?v=2",
+            stack: ["Security", "AI", "OS", "Network"],
+            achievements: [
+                "Relevant Coursework: Software Security, Network Security, Operating Systems, Artificial Intelligence.",
+            ],
+        },
+        {
             company: "JSET Automated Technologies",
             role: "Controls Technician Apprentice",
             location: "Columbus, OH",
             period: "Jul 2022 – Sep 2022",
+            logo: "/logos/JSET logo.png",
+            stack: ["HVAC", "Networking", "Hardware"],
             achievements: [
                 "Executed large-scale temperature control installations for AWS and Google data centers focusing on commercial HVAC and cooling efficiency.",
                 "Installed surveillance devices and Wi-Fi networks at an industrial scale and learned technical engineering practices.",
