@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import { Roboto_Mono, Inter } from "next/font/google";
 import "./globals.css";
-import { CommandPalette } from "@/components/CommandPalette";
-import { ThemeManager } from "@/components/ThemeManager";
+import { CommandPalette } from "@/components/layout/CommandPalette";
+import { ThemeProvider } from "@/context/ThemeContext";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -25,11 +25,12 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <body className={`${inter.variable} ${robotoMono.variable} font-sans bg-schematic-bg text-schematic-primary overflow-x-hidden selection:bg-schematic-accent selection:text-schematic-bg`}>
-        <ThemeManager />
-        {children}
-        <CommandPalette />
+        <ThemeProvider>
+          {children}
+          <CommandPalette />
+        </ThemeProvider>
       </body>
     </html>
   );

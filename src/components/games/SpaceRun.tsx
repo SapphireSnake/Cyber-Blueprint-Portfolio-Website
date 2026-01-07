@@ -7,14 +7,12 @@ import { EffectComposer, Bloom } from "@react-three/postprocessing";
 import { Text } from "@react-three/drei";
 
 // Game Constants
-// Game Constants
-// Game Constants
 const TUNNEL_RADIUS = 8;
 const SEGMENTS = 16;
 const SEGMENT_LENGTH = 4;
 const SPEED = 8;
 const ROTATION_SPEED = 1.5;
-const VIEW_DISTANCE = 90; // Increased from 60
+const VIEW_DISTANCE = 90;
 const GRAVITY = 12;
 const JUMP_FORCE = 8;
 
@@ -74,7 +72,6 @@ function SpeedLines({ isFalling }: { isFalling: boolean }) {
 
     return (
         <group>
-            {/* Placeholder for speed lines - simple vertical streaks */}
             {Array.from({ length: 20 }).map((_, i) => (
                 <mesh key={i} position={[
                     (Math.random() - 0.5) * 10,
@@ -93,7 +90,7 @@ function BackgroundTunnel() {
     return (
         <mesh rotation={[Math.PI / 2, 0, 0]}>
             <cylinderGeometry args={[TUNNEL_RADIUS + 2, TUNNEL_RADIUS + 2, VIEW_DISTANCE * SEGMENT_LENGTH, 32, 64, true]} />
-            <meshBasicMaterial color="#00ff9d" wireframe={true} transparent opacity={0.05} side={THREE.BackSide} />
+            <meshBasicMaterial color="#00ff9d" wireframe={true} transparent opacity={0.05} side={THREE.DoubleSide} />
         </mesh>
     );
 }
@@ -103,25 +100,37 @@ function Player({
     playerYRef,
     setGameOver,
     gameOver,
-    isOverHole
+    isOverHole,
+    hasStarted
 }: {
     gameActive: boolean,
     playerYRef: React.MutableRefObject<number>,
     setGameOver: (state: boolean) => void,
     gameOver: boolean,
-    isOverHole: React.MutableRefObject<boolean>
+    isOverHole: React.MutableRefObject<boolean>,
+    hasStarted: boolean
 }) {
     const meshRef = useRef<THREE.Mesh>(null);
-    // Local state for physics to avoid re-renders, but we need to sync with ref
     const yPos = useRef(-TUNNEL_RADIUS + 0.5);
     const velocityY = useRef(0);
     const jumpCount = useRef(0);
 
     useFrame((state, delta) => {
+        // Clamp delta to prevent huge physics jumps on frame drops
+        const dt = Math.min(delta, 0.1);
+
+        // If not started, just hover
+        if (!hasStarted) {
+            if (meshRef.current) {
+                meshRef.current.position.y = yPos.current + Math.sin(state.clock.elapsedTime * 2) * 0.2;
+            }
+            return;
+        }
+
         // If game over, let player fall into abyss
         if (gameOver) {
-            velocityY.current -= GRAVITY * delta;
-            yPos.current += velocityY.current * delta;
+            velocityY.current -= GRAVITY * dt;
+            yPos.current += velocityY.current * dt;
 
             if (meshRef.current) {
                 meshRef.current.position.y = yPos.current;
@@ -137,8 +146,8 @@ function Player({
 
         // If we are above ground, apply gravity
         if (yPos.current > groundLevel || velocityY.current > 0) {
-            velocityY.current -= GRAVITY * delta;
-            const newY = yPos.current + velocityY.current * delta;
+            velocityY.current -= GRAVITY * dt;
+            const newY = yPos.current + velocityY.current * dt;
 
             // Check landing
             if (newY <= groundLevel && velocityY.current < 0) {
@@ -156,13 +165,16 @@ function Player({
             }
         } else if (isOverHole.current) {
             // Fall
-            velocityY.current -= GRAVITY * delta;
-            yPos.current += velocityY.current * delta;
+            velocityY.current -= GRAVITY * dt;
+            yPos.current += velocityY.current * dt;
         }
 
-        // Check Death Depth
-        if (yPos.current < -20 && !gameOver) {
-            setGameOver(true);
+        // Auto-Respawn Check (instead of Game Over)
+        // If player falls past stars (e.g. -30), reset them to top
+        if (yPos.current < -30) {
+            yPos.current = 0; // Drop from center
+            velocityY.current = 0;
+            // Optional: Add a penalty or visual effect here
         }
 
         // Sync ref
@@ -174,7 +186,7 @@ function Player({
 
     useEffect(() => {
         const handleKeyDown = (e: KeyboardEvent) => {
-            if (!gameActive || gameOver) return;
+            if (!gameActive || gameOver || !hasStarted) return;
             if (e.key === "ArrowUp") {
                 if (jumpCount.current < 2) {
                     velocityY.current = JUMP_FORCE;
@@ -187,7 +199,7 @@ function Player({
         };
         window.addEventListener("keydown", handleKeyDown);
         return () => window.removeEventListener("keydown", handleKeyDown);
-    }, [gameActive, gameOver]);
+    }, [gameActive, gameOver, hasStarted]);
 
     // Reset physics on mount
     useEffect(() => {
@@ -211,18 +223,21 @@ function Tunnel({
     gameActive,
     isOverHole,
     isFalling,
-    playerYRef
+    playerYRef,
+    hasStarted
 }: {
     tunnelRotation: number,
     gameActive: boolean,
     isOverHole: React.MutableRefObject<boolean>,
     isFalling: boolean,
-    playerYRef: React.MutableRefObject<number>
+    playerYRef: React.MutableRefObject<number>,
+    hasStarted: boolean
 }) {
     const meshRef = useRef<THREE.InstancedMesh>(null);
-    const [rings, setRings] = useState<boolean[][]>([]);
-    const offsetZ = useRef(0);
-    const lastRingIndex = useRef(0);
+    // Use Ref instead of State for rings to ensure synchronous updates with the render loop
+    // This eliminates the jitter caused by React state update latency
+    const rings = useRef<boolean[][]>([]);
+    const localOffset = useRef(0); // Tracks distance within current segment
     const pathCenter = useRef(0);
 
     // Initialize rings
@@ -246,44 +261,46 @@ function Tunnel({
                 initialRings.push(ring);
             }
         }
-        setRings(initialRings);
+        rings.current = initialRings;
     }, []);
 
     // Game Loop
     useFrame((state, delta) => {
         if ((!gameActive && !isFalling) || !meshRef.current) return;
 
-        // Only move forward if game is active and NOT falling
-        if (gameActive && !isFalling) {
+        // Only move forward if game is active, NOT falling, and STARTED
+        if (gameActive && !isFalling && hasStarted) {
             const moveDist = SPEED * delta;
-            offsetZ.current += moveDist;
+            localOffset.current += moveDist;
 
-            const currentRingIdx = Math.floor((offsetZ.current + 2) / SEGMENT_LENGTH);
+            // When we've moved past one segment length, shift the world
+            // Doing this synchronously in the frame loop prevents visual jitter
+            if (localOffset.current >= SEGMENT_LENGTH) {
+                localOffset.current -= SEGMENT_LENGTH;
 
-            if (currentRingIdx > lastRingIndex.current) {
-                lastRingIndex.current = currentRingIdx;
+                // Shift rings
+                const next = [...rings.current.slice(1)];
+                const newRing = new Array(SEGMENTS).fill(false);
 
-                setRings(prev => {
-                    const next = [...prev.slice(1)];
-                    const newRing = new Array(SEGMENTS).fill(false);
-                    if (Math.random() < 0.4) {
-                        const shift = Math.random() < 0.5 ? 1 : -1;
-                        pathCenter.current = (pathCenter.current + shift + SEGMENTS) % SEGMENTS;
-                    }
-                    for (let j = -1; j <= 1; j++) {
-                        const idx = (pathCenter.current + j + SEGMENTS) % SEGMENTS;
-                        newRing[idx] = true;
-                    }
-                    if (Math.random() < 0.2) {
-                        newRing[pathCenter.current] = false;
-                    }
-                    next.push(newRing);
-                    return next;
-                });
+                // Path generation logic
+                if (Math.random() < 0.4) {
+                    const shift = Math.random() < 0.5 ? 1 : -1;
+                    pathCenter.current = (pathCenter.current + shift + SEGMENTS) % SEGMENTS;
+                }
+                for (let j = -1; j <= 1; j++) {
+                    const idx = (pathCenter.current + j + SEGMENTS) % SEGMENTS;
+                    newRing[idx] = true;
+                }
+                if (Math.random() < 0.2) {
+                    newRing[pathCenter.current] = false;
+                }
+
+                next.push(newRing);
+                rings.current = next;
             }
         }
 
-        // Collision Detection Logic (Always run to update isOverHole)
+        // Collision Detection Logic
         let normalizedRot = tunnelRotation % (Math.PI * 2);
         if (normalizedRot < 0) normalizedRot += Math.PI * 2;
 
@@ -296,9 +313,8 @@ function Tunnel({
 
         const segmentIdx = Math.round(targetSegmentAngle / segmentAngleStep) % SEGMENTS;
 
-        // Use ref for playerY check
-        if (rings.length > 0 && playerYRef.current <= -TUNNEL_RADIUS + 0.6) {
-            const currentRing = rings[0];
+        if (rings.current.length > 0 && playerYRef.current <= -TUNNEL_RADIUS + 0.6) {
+            const currentRing = rings.current[0];
             isOverHole.current = !currentRing[segmentIdx];
         } else {
             isOverHole.current = false;
@@ -308,9 +324,22 @@ function Tunnel({
         const tempObject = new THREE.Object3D();
         let instanceId = 0;
 
-        rings.forEach((ring, ringIdx) => {
-            const actualZ = -((ringIdx * SEGMENT_LENGTH)) + (offsetZ.current % SEGMENT_LENGTH);
-            if (actualZ > 15) return;
+        rings.current.forEach((ring, ringIdx) => {
+            // Calculate Z position based on ring index and local offset
+            // Ring 0 is closest, Ring N is furthest
+            // We want them to move towards +Z (if camera is looking -Z? No, camera is at +5 looking -Z)
+            // Wait, previous logic: actualZ = -((ringIdx * SEGMENT_LENGTH)) + (offsetZ.current % SEGMENT_LENGTH);
+            // If offsetZ increases, actualZ increases (moves towards camera at 0 or +Z)
+
+            // New logic: 
+            // Ring 0 is at 0 + localOffset
+            // Ring 1 is at -SEGMENT_LENGTH + localOffset
+            // etc.
+
+            const actualZ = -(ringIdx * SEGMENT_LENGTH) + localOffset.current;
+
+            // Cull if behind camera (camera at +5)
+            if (actualZ > 10) return;
 
             ring.forEach((isActive, segIdx) => {
                 if (!isActive) return;
@@ -339,7 +368,7 @@ function Tunnel({
             <Stars />
             <instancedMesh ref={meshRef} args={[undefined, undefined, VIEW_DISTANCE * SEGMENTS]}>
                 <boxGeometry args={[1, 1, 1]} />
-                <meshBasicMaterial color="#00ff9d" wireframe={false} transparent opacity={0.6} />
+                <meshBasicMaterial color="#00ff9d" wireframe={false} transparent opacity={0.8} side={THREE.DoubleSide} />
                 <lineSegments>
                     <edgesGeometry args={[new THREE.BoxGeometry(1, 1, 1)]} />
                     <meshBasicMaterial color="#ffffff" transparent opacity={0.5} />
@@ -356,7 +385,8 @@ function GameScene({
     playerYRef,
     isOverHole,
     gameOver,
-    invertControls
+    invertControls,
+    hasStarted
 }: {
     gameActive: boolean,
     setGameOver: (s: boolean) => void,
@@ -364,7 +394,8 @@ function GameScene({
     playerYRef: React.MutableRefObject<number>,
     isOverHole: React.MutableRefObject<boolean>,
     gameOver: boolean,
-    invertControls: boolean
+    invertControls: boolean,
+    hasStarted: boolean
 }) {
     const [rotation, setRotation] = useState(0);
     const targetRotation = useRef(0);
@@ -375,7 +406,7 @@ function GameScene({
 
         if (gameOver) {
             // No rotation on death
-        } else if (gameActive) {
+        } else if (gameActive && hasStarted) {
             setRotation(r => {
                 const diff = targetRotation.current - r;
                 return r + diff * delta * 2;
@@ -385,22 +416,20 @@ function GameScene({
 
     useEffect(() => {
         const handleKeyDown = (e: KeyboardEvent) => {
-            if (!gameActive || gameOver) return;
+            if (!gameActive || gameOver || !hasStarted) return;
 
             const direction = invertControls ? -1 : 1;
 
             if (e.key === "ArrowLeft") {
-                // SWAPPED: Left now ADDS rotation (moves player left relative to tunnel)
                 targetRotation.current += ((Math.PI * 2) / SEGMENTS) * direction;
             }
             if (e.key === "ArrowRight") {
-                // SWAPPED: Right now SUBTRACTS rotation
                 targetRotation.current -= ((Math.PI * 2) / SEGMENTS) * direction;
             }
         };
         window.addEventListener("keydown", handleKeyDown);
         return () => window.removeEventListener("keydown", handleKeyDown);
-    }, [gameActive, gameOver, invertControls]);
+    }, [gameActive, gameOver, invertControls, hasStarted]);
 
     return (
         <>
@@ -412,6 +441,7 @@ function GameScene({
                     isOverHole={isOverHole}
                     isFalling={gameOver}
                     playerYRef={playerYRef}
+                    hasStarted={hasStarted}
                 />
             </group>
         </>
@@ -422,19 +452,20 @@ export function SpaceRun({ onExit }: { onExit: () => void }) {
     const [gameActive, setGameActive] = useState(true);
     const [gameOver, setGameOver] = useState(false);
     const [score, setScore] = useState(0);
-    // Use ref for playerY to avoid re-renders
     const playerYRef = useRef(-TUNNEL_RADIUS + 0.5);
     const [gameId, setGameId] = useState(0);
     const [waitingForRestart, setWaitingForRestart] = useState(false);
     const [invertControls, setInvertControls] = useState(false);
     const isOverHole = useRef(false);
+    const [hasStarted, setHasStarted] = useState(false);
+    const restartCooldown = useRef(false);
 
     useEffect(() => {
-        if (gameActive && !gameOver) {
+        if (gameActive && !gameOver && hasStarted) {
             const interval = setInterval(() => setScore(s => s + 1), 100);
             return () => clearInterval(interval);
         }
-    }, [gameActive, gameOver]);
+    }, [gameActive, gameOver, hasStarted]);
 
     const handleRestart = () => {
         setGameOver(false);
@@ -444,26 +475,37 @@ export function SpaceRun({ onExit }: { onExit: () => void }) {
         setGameId(prev => prev + 1);
         playerYRef.current = -TUNNEL_RADIUS + 0.5;
         isOverHole.current = false;
+        setHasStarted(false); // Reset start state
+
+        // Prevent immediate start
+        restartCooldown.current = true;
+        setTimeout(() => {
+            restartCooldown.current = false;
+        }, 500);
     };
 
-    // Handle Any Key for Restart
-    useEffect(() => {
-        if (!waitingForRestart) return;
-        const handleAnyKey = () => handleRestart();
-        window.addEventListener("keydown", handleAnyKey);
-        return () => window.removeEventListener("keydown", handleAnyKey);
-    }, [waitingForRestart]);
-
-    // Handle ESC key
+    // Handle Any Key for Start / Restart
     useEffect(() => {
         const handleKeyDown = (e: KeyboardEvent) => {
             if (e.key === "Escape") {
                 onExit();
+                return;
+            }
+
+            if (restartCooldown.current) return;
+
+            if (!hasStarted) {
+                setHasStarted(true);
+                return;
+            }
+
+            if (waitingForRestart) {
+                handleRestart();
             }
         };
         window.addEventListener("keydown", handleKeyDown);
         return () => window.removeEventListener("keydown", handleKeyDown);
-    }, [onExit]);
+    }, [waitingForRestart, hasStarted, onExit]);
 
     return (
         <div className="fixed inset-0 z-[200] bg-black cursor-none">
@@ -489,12 +531,19 @@ export function SpaceRun({ onExit }: { onExit: () => void }) {
                 </div>
             </div>
 
-            {/* UI Removed as per request */}
-            {/* {gameOver && (...)} */}
+            {/* Start Prompt */}
+            {!hasStarted && (
+                <div className="absolute inset-0 flex items-center justify-center z-50 pointer-events-none">
+                    <div className="bg-black/80 border border-schematic-accent p-8 rounded text-center animate-pulse">
+                        <h1 className="text-4xl font-bold text-schematic-accent mb-4">READY_PLAYER_ONE</h1>
+                        <p className="text-xl text-schematic-primary">PRESS ANY KEY TO ENGAGE THRUSTERS</p>
+                    </div>
+                </div>
+            )}
 
             <Canvas camera={{ position: [0, -TUNNEL_RADIUS + 3, 5], fov: 75 }}>
                 <color attach="background" args={['#000000']} />
-                <fog attach="fog" args={['#000000', 20, 100]} />
+                <fog attach="fog" args={['#000000', 40, 120]} />
 
                 <GameScene
                     key={`scene-${gameId}`}
@@ -505,6 +554,7 @@ export function SpaceRun({ onExit }: { onExit: () => void }) {
                     isOverHole={isOverHole}
                     gameOver={gameOver}
                     invertControls={invertControls}
+                    hasStarted={hasStarted}
                 />
 
                 <Player
@@ -514,14 +564,9 @@ export function SpaceRun({ onExit }: { onExit: () => void }) {
                     setGameOver={setGameOver}
                     gameOver={gameOver}
                     isOverHole={isOverHole}
+                    hasStarted={hasStarted}
                 />
                 <CameraController playerYRef={playerYRef} />
-                <RestartController
-                    gameOver={gameOver}
-                    playerYRef={playerYRef}
-                    waitingForRestart={waitingForRestart}
-                    setWaitingForRestart={setWaitingForRestart}
-                />
                 <SpeedLines isFalling={gameOver} />
 
                 <EffectComposer>
@@ -532,34 +577,19 @@ export function SpaceRun({ onExit }: { onExit: () => void }) {
     );
 }
 
-function RestartController({
-    gameOver,
-    playerYRef,
-    waitingForRestart,
-    setWaitingForRestart
-}: {
-    gameOver: boolean,
-    playerYRef: React.MutableRefObject<number>,
-    waitingForRestart: boolean,
-    setWaitingForRestart: (b: boolean) => void
-}) {
-    useFrame(() => {
-        if (gameOver && playerYRef.current < -50 && !waitingForRestart) {
-            setWaitingForRestart(true);
-        }
-    });
-    return null;
-}
-
 function CameraController({ playerYRef }: { playerYRef: React.MutableRefObject<number> }) {
     const { camera } = useThree();
 
-    useFrame(() => {
+    useFrame((state, delta) => {
         // Camera follow logic
         const targetY = playerYRef.current + 4.0;
         const targetZ = 10.0;
 
-        camera.position.set(0, THREE.MathUtils.lerp(camera.position.y, targetY, 0.1), targetZ);
+        // Use damp for smoother, frame-independent smoothing
+        // lambda = 5 is a good starting point for smooth tracking
+        camera.position.y = THREE.MathUtils.damp(camera.position.y, targetY, 5, delta);
+        camera.position.x = 0;
+        camera.position.z = targetZ;
 
         camera.lookAt(0, playerYRef.current - 2, -20);
     });

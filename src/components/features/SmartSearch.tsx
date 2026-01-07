@@ -1,18 +1,36 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Search, Terminal, ChevronRight, ExternalLink } from "lucide-react";
 import { RESUME } from "@/data/resume";
 import { cn } from "@/lib/utils";
-import { ProjectDiagram } from "@/components/ProjectDiagram";
-import { HolographicCard } from "@/components/HolographicCard";
-import { DigitalTwin3D } from "@/components/DigitalTwin3D";
-import { CmmSenseVisual } from "@/components/CmmSenseVisual";
+import { ProjectDiagram } from "@/components/visuals/ProjectDiagram";
+import { HolographicCard } from "@/components/visuals/HolographicCard";
+import { DigitalTwin3D } from "@/components/visuals/DigitalTwin3D";
+import { CmmSenseVisual } from "@/components/visuals/CmmSenseVisual";
 
-export function SmartSearch() {
+interface SmartSearchProps {
+    externalFilter?: string | null;
+    onFilterChange?: (filter: string | null) => void;
+}
+
+export function SmartSearch({ externalFilter, onFilterChange }: SmartSearchProps) {
     const [query, setQuery] = useState("");
     const [activeFilter, setActiveFilter] = useState<string | null>(null);
     const [expandedProjects, setExpandedProjects] = useState<Set<string>>(new Set());
+
+    // Sync external filter
+    useEffect(() => {
+        if (externalFilter !== undefined) {
+            setActiveFilter(externalFilter);
+        }
+    }, [externalFilter]);
+
+    const handleFilterClick = (filter: string) => {
+        const newFilter = activeFilter === filter ? null : filter;
+        setActiveFilter(newFilter);
+        onFilterChange?.(newFilter);
+    };
 
     const filters = ["IoT", "AI", "Cloud", "Embedded"];
 
@@ -67,23 +85,8 @@ export function SmartSearch() {
                         </div>
                     </div>
 
-                    {/* Filters */}
-                    <div className="flex flex-wrap gap-2 mb-12">
-                        {filters.map((filter) => (
-                            <button
-                                key={filter}
-                                onClick={() => setActiveFilter(activeFilter === filter ? null : filter)}
-                                className={cn(
-                                    "px-4 py-1 rounded text-xs font-mono border transition-all",
-                                    activeFilter === filter
-                                        ? "bg-schematic-accent/10 border-schematic-accent text-schematic-accent"
-                                        : "border-schematic-grid text-schematic-secondary hover:border-schematic-secondary"
-                                )}
-                            >
-                                {filter}
-                            </button>
-                        ))}
-                    </div>
+                    {/* Filters Removed - Controlled by TechStack */}
+                    <div className="mb-8"></div>
 
                     {/* Results */}
                     <div className="space-y-6">

@@ -4,8 +4,8 @@ import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Terminal, Play, Settings, Power } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { SnakeGame } from "./SnakeGame";
-import { SpaceRun } from "./SpaceRun";
+import { SnakeGame } from "@/components/games/SnakeGame";
+import { SpaceRun } from "@/components/games/SpaceRun";
 
 export function BootSequence({ onComplete }: { onComplete: () => void }) {
     const [step, setStep] = useState(0);

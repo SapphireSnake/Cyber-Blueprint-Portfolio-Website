@@ -4,10 +4,14 @@ import { useState, useEffect } from "react";
 import { Activity, Server, Shield } from "lucide-react";
 
 export function SystemFooter() {
-    const [time, setTime] = useState<string>(() => new Date().toISOString());
+    const [time, setTime] = useState<string>("");
     const [latency, setLatency] = useState(12);
+    const [mounted, setMounted] = useState(false);
 
     useEffect(() => {
+        setMounted(true);
+        setTime(new Date().toISOString());
+
         const interval = setInterval(() => {
             setTime(new Date().toISOString());
             setLatency(prev => {
@@ -23,7 +27,7 @@ export function SystemFooter() {
             <div className="flex items-center space-x-4">
                 <div className="flex items-center space-x-1">
                     <Server className="w-3 h-3" />
-                    <span>SERVER_TIME: {time}</span>
+                    <span>SERVER_TIME: {mounted ? time : "INITIALIZING..."}</span>
                 </div>
                 <div className="hidden md:flex items-center space-x-1">
                     <Activity className="w-3 h-3 text-schematic-accent" />

@@ -7,46 +7,33 @@ export function GridBackground() {
     const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
     const [radius, setRadius] = useState(300);
     const [packets, setPackets] = useState<{ id: number; x: number; y: number; axis: 'x' | 'y'; direction: 1 | -1; distance: number }[]>([]);
-    const [gridColor, setGridColor] = useState("#00ff9d"); // Default Green
     const containerRef = useRef<HTMLDivElement>(null);
 
-    // Watch for Theme Changes
-    useEffect(() => {
-        const updateColor = () => {
-            const isBlueprint = document.body.classList.contains("blueprint-mode");
-            setGridColor(isBlueprint ? "#ffffff" : "#00ff9d");
-        };
-
-        // Initial check
-        updateColor();
-
-        // Observer for class changes
-        const observer = new MutationObserver((mutations) => {
-            mutations.forEach((mutation) => {
-                if (mutation.attributeName === "class") {
-                    updateColor();
-                }
-            });
-        });
-
-        observer.observe(document.body, { attributes: true });
-
-        return () => observer.disconnect();
-    }, []);
+    // No more theme watching needed! CSS variables handle it instantly.
 
     useEffect(() => {
+        let animationFrameId: number;
+
         const handleMouseMove = (event: MouseEvent) => {
-            if (containerRef.current) {
-                const rect = containerRef.current.getBoundingClientRect();
-                setMousePosition({
-                    x: event.clientX - rect.left,
-                    y: event.clientY - rect.top,
-                });
-            }
+            if (animationFrameId) return;
+
+            animationFrameId = requestAnimationFrame(() => {
+                if (containerRef.current) {
+                    const rect = containerRef.current.getBoundingClientRect();
+                    setMousePosition({
+                        x: event.clientX - rect.left,
+                        y: event.clientY - rect.top,
+                    });
+                }
+                animationFrameId = 0;
+            });
         };
 
         window.addEventListener("mousemove", handleMouseMove);
-        return () => window.removeEventListener("mousemove", handleMouseMove);
+        return () => {
+            window.removeEventListener("mousemove", handleMouseMove);
+            if (animationFrameId) cancelAnimationFrame(animationFrameId);
+        };
     }, []);
 
     useEffect(() => {
@@ -103,7 +90,7 @@ export function GridBackground() {
                 <motion.div
                     className="absolute inset-0 bg-[size:40px_40px]"
                     style={{
-                        backgroundImage: `linear-gradient(to right, ${gridColor} 1px, transparent 1px), linear-gradient(to bottom, ${gridColor} 1px, transparent 1px)`,
+                        backgroundImage: `linear-gradient(to right, var(--color-schematic-accent) 1px, transparent 1px), linear-gradient(to bottom, var(--color-schematic-accent) 1px, transparent 1px)`,
                         maskImage: `radial-gradient(${radius}px circle at ${mousePosition.x}px ${mousePosition.y}px, black, transparent)`,
                         WebkitMaskImage: `radial-gradient(${radius}px circle at ${mousePosition.x}px ${mousePosition.y}px, black, transparent)`,
                     }}
@@ -111,16 +98,10 @@ export function GridBackground() {
                     transition={{ duration: 0.5 }}
                 />
 
-                {/* Data Packets (Moving Particles with Gradient Trails) */}
+                {/* Data Packets (Moving Particles with Gradient Trails) (Shooting Star Effect) */}
                 {packets.map(packet => {
                     const isX = packet.axis === 'x';
                     const isPositive = packet.direction === 1;
-
-                    // Explicit positioning logic
-                    // Right (+x): Head at 60px, Trail at 0
-                    // Left (-x): Head at 0, Trail at 4px
-                    // Down (+y): Head at 60px, Trail at 0
-                    // Up (-y): Head at 0, Trail at 4px
 
                     const headStyle = isX
                         ? { left: isPositive ? '60px' : '0', top: 0, marginTop: '-1px' }
@@ -140,8 +121,8 @@ export function GridBackground() {
                                     width: isX ? '60px' : '2px',
                                     height: isX ? '2px' : '60px',
                                     background: isX
-                                        ? `linear-gradient(${isPositive ? '90deg' : '-90deg'}, transparent, ${gridColor})`
-                                        : `linear-gradient(${isPositive ? '180deg' : '0deg'}, transparent, ${gridColor})`,
+                                        ? `linear-gradient(${isPositive ? '90deg' : '-90deg'}, transparent, var(--color-schematic-accent))`
+                                        : `linear-gradient(${isPositive ? '180deg' : '0deg'}, transparent, var(--color-schematic-accent))`,
                                     borderRadius: '1px',
                                 }}
                                 initial={{ opacity: 0 }}
@@ -160,8 +141,8 @@ export function GridBackground() {
                                     ...headStyle,
                                     width: '4px',
                                     height: '4px',
-                                    backgroundColor: gridColor,
-                                    boxShadow: `0 0 10px ${gridColor}`
+                                    backgroundColor: 'var(--color-schematic-accent)',
+                                    boxShadow: `0 0 10px var(--color-schematic-accent)`
                                 }}
                                 initial={{ opacity: 0 }}
                                 animate={{

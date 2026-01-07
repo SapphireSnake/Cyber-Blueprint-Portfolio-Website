@@ -21,3 +21,11 @@ A high-performance, immersive portfolio website built with Next.js, Tailwind CSS
     npm run dev
     ```
 3.  Open [http://localhost:3000](http://localhost:3000).
+
+## Documentation
+
+-   [Coding Standards](docs/CODING_STANDARDS.md): Theme architecture, CSS variables, and file organization.
+-   [Architecture & Components](docs/ARCHITECTURE.md): Overview of key components and system design.
+-   [Project Ideas](docs/IDEAS.md): Parked features and future concepts.
+-   [Implementation Plans](docs/IMPLEMENTATION_PLANS.md): Archive of development plans.
+

@@ -1,8 +1,8 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { SnakeGame } from "@/components/SnakeGame";
-import { SpaceRun } from "@/components/SpaceRun";
+import { SnakeGame } from "@/components/games/SnakeGame";
+import { SpaceRun } from "@/components/games/SpaceRun";
 
 export function GameOverlay() {
     const [activeGame, setActiveGame] = useState<"snake" | "space-run" | null>(null);

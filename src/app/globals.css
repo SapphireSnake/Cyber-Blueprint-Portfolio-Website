@@ -4,11 +4,25 @@
   --font-mono: var(--font-roboto-mono);
   --font-sans: var(--font-inter);
 
+  --color-schematic-bg: #003366;
+  --color-schematic-grid: rgba(255, 255, 255, 0.3);
+  --color-schematic-primary: #ffffff;
+  --color-schematic-secondary: #b3d9ff;
+  --color-schematic-accent: #ffffff;
+}
+
+/* Schematic (Dark) Theme Overrides */
+.schematic-mode {
   --color-schematic-bg: #0a0a0a;
   --color-schematic-grid: #222222;
   --color-schematic-primary: #ededed;
   --color-schematic-secondary: #888888;
   --color-schematic-accent: #00ff9d;
+  color-scheme: dark;
+}
+
+:root {
+  color-scheme: light;
 }
 
 body {

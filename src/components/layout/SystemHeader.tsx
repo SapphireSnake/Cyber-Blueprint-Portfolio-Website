@@ -2,19 +2,27 @@
 
 import { useState, useEffect } from "react";
 import { cn } from "@/lib/utils";
+import { useTheme } from "@/context/ThemeContext";
 
 export function SystemHeader() {
-    const [isScrolled, setIsScrolled] = useState(false);
+    const [scrolled, setScrolled] = useState(false);
     const [funDropdownOpen, setFunDropdownOpen] = useState(false);
+    const { toggleTheme } = useTheme();
 
     useEffect(() => {
+        let timeoutId: NodeJS.Timeout;
+
         const handleScroll = () => {
-            if (window.scrollY > 50) {
-                setIsScrolled(true);
-            }
-            else {
-                setIsScrolled(false);
-            }
+            if (timeoutId) return;
+
+            timeoutId = setTimeout(() => {
+                if (window.scrollY > 50) {
+                    setScrolled(true);
+                } else {
+                    setScrolled(false);
+                }
+                timeoutId = undefined as any;
+            }, 100);
         };
 
         const handleClickOutside = (e: MouseEvent) => {
@@ -28,6 +36,7 @@ export function SystemHeader() {
         return () => {
             window.removeEventListener("scroll", handleScroll);
             window.removeEventListener("click", handleClickOutside);
+            if (timeoutId) clearTimeout(timeoutId);
         };
     }, [funDropdownOpen]);
 
@@ -50,6 +59,9 @@ export function SystemHeader() {
             case 'space-run':
                 window.dispatchEvent(new CustomEvent("toggle-space-run"));
                 break;
+            case 'reboot':
+                window.dispatchEvent(new CustomEvent("restart-intro"));
+                break;
         }
     };
 
@@ -57,7 +69,7 @@ export function SystemHeader() {
         <header
             className={cn(
                 "fixed top-0 left-0 right-0 z-50 border-b border-schematic-grid transition-all duration-300 backdrop-blur-md",
-                isScrolled ? "bg-schematic-bg/90 py-2" : "bg-schematic-bg py-4"
+                scrolled ? "bg-schematic-bg/90 py-2" : "bg-schematic-bg py-4"
             )}
         >
             <div className="container mx-auto px-4">
@@ -108,6 +120,12 @@ export function SystemHeader() {
                                             SYSTEM_LOG
                                         </button>
                                         <button
+                                            onClick={() => handleFunAction('reboot')}
+                                            className="w-full text-left px-4 py-2 hover:bg-schematic-accent/10 hover:text-schematic-accent transition-colors text-xs font-mono border-b border-schematic-grid/30 last:border-0"
+                                        >
+                                            ENTER: FIRST TIME
+                                        </button>
+                                        <button
                                             onClick={() => handleFunAction('snake')}
                                             className="w-full text-left px-4 py-2 hover:bg-schematic-accent/10 hover:text-schematic-accent transition-colors text-xs font-mono border-b border-schematic-grid/30 last:border-0"
                                         >
@@ -115,7 +133,7 @@ export function SystemHeader() {
                                         </button>
                                         <button
                                             onClick={() => handleFunAction('space-run')}
-                                            className="w-full text-left px-4 py-2 hover:bg-schematic-accent/10 hover:text-schematic-accent transition-colors text-xs font-mono"
+                                            className="w-full text-left px-4 py-2 hover:bg-schematic-accent/10 hover:text-schematic-accent transition-colors text-xs font-mono border-b border-schematic-grid/30 last:border-0"
                                         >
                                             SPACE_RUN_3
                                         </button>
@@ -124,7 +142,7 @@ export function SystemHeader() {
                             </div>
 
                             <button
-                                onClick={() => window.dispatchEvent(new CustomEvent("toggle-theme"))}
+                                onClick={toggleTheme}
                                 className="hover:text-schematic-accent transition-colors uppercase"
                             >
                                 Theme

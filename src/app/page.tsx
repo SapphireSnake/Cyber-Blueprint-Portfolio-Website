@@ -1,30 +1,40 @@
 "use client";
 
-import { useState } from "react";
-import { SystemHeader } from "@/components/SystemHeader";
-import { SkillMatrix } from "@/components/SkillMatrix";
-import { SmartSearch } from "@/components/SmartSearch";
-import { GridBackground } from "@/components/GridBackground";
-import { MqttStream } from "@/components/MqttStream";
-import { ProtocolHandshake } from "@/components/ProtocolHandshake";
-import { DigitalTwin } from "@/components/DigitalTwin";
-import { SystemFooter } from "@/components/SystemFooter";
-import { TerminalCLI } from "@/components/TerminalCLI";
-import { DataUplink } from "@/components/DataUplink";
-import { KonamiCode } from "@/components/KonamiCode";
-import { GameOverlay } from "@/components/GameOverlay";
-import { SystemModal } from "@/components/SystemModal";
-import { ExperienceLog } from "@/components/ExperienceLog";
-import { EducationLog } from "@/components/EducationLog";
+import { useState, useEffect } from "react";
+import { SystemHeader } from "@/components/layout/SystemHeader";
+import { SkillMatrix } from "@/components/features/SkillMatrix";
+import { SmartSearch } from "@/components/features/SmartSearch";
+import { GridBackground } from "@/components/visuals/GridBackground";
+import { MqttStream } from "@/components/visuals/MqttStream";
+import { ProtocolHandshake } from "@/components/system/ProtocolHandshake";
+import { DigitalTwin } from "@/components/visuals/DigitalTwin";
+import { SystemFooter } from "@/components/layout/SystemFooter";
+import { TerminalCLI } from "@/components/system/TerminalCLI";
+import { DataUplink } from "@/components/features/DataUplink";
+import { GameOverlay } from "@/components/ui/GameOverlay";
+import { SystemModal } from "@/components/ui/SystemModal";
+import { ExperienceLog } from "@/components/features/ExperienceLog";
+import { EducationLog } from "@/components/features/EducationLog";
 import { Mail, Github, Linkedin, FileText, Activity, Box, ChevronRight } from "lucide-react";
 
-import { BootSequence } from "@/components/BootSequence";
+import { BootSequence } from "@/components/system/BootSequence";
+import { TechStack } from "@/components/features/TechStack";
 
 export default function Home() {
-  const [isLoaded, setIsLoaded] = useState(false);
-  const [bootComplete, setBootComplete] = useState(false);
+  const [isLoaded, setIsLoaded] = useState(true);
+  const [bootComplete, setBootComplete] = useState(true);
+
+  useEffect(() => {
+    const handleRestart = () => {
+      setIsLoaded(false);
+      setBootComplete(false);
+    };
+    window.addEventListener("restart-intro", handleRestart);
+    return () => window.removeEventListener("restart-intro", handleRestart);
+  }, []);
   const [showTelemetry, setShowTelemetry] = useState(false);
   const [showDigitalTwin, setShowDigitalTwin] = useState(false);
+  const [projectFilter, setProjectFilter] = useState<string | null>(null);
 
   // 1. Run Handshake (Loading)
   if (!isLoaded) {
@@ -39,7 +49,6 @@ export default function Home() {
   // 3. Show Content
   return (
     <main className="min-h-screen relative">
-      <KonamiCode />
 
       {isLoaded && (
         <div className="animate-in fade-in duration-1000">
@@ -49,7 +58,7 @@ export default function Home() {
 
           <div className="container mx-auto px-4 pt-32 pb-20">
             {/* Central Hub Hero */}
-            <section className="min-h-[80vh] flex flex-col justify-center relative mb-10">
+            <section className="min-h-[80vh] flex flex-col justify-center relative mb-6">
               <div className="border border-schematic-grid bg-schematic-bg/50 backdrop-blur-[2px] p-8 md:p-12 rounded-lg max-w-6xl mx-auto w-full relative overflow-hidden">
                 {/* Grid Line Decoration */}
                 <div className="absolute top-0 left-0 w-full h-px bg-schematic-grid" />
@@ -59,20 +68,24 @@ export default function Home() {
 
                 <div className="flex flex-col md:flex-row items-center justify-center gap-8 md:gap-8 relative z-10">
                   {/* Left Column: Text & Socials */}
-                  <div className="flex flex-col justify-center space-y-12 md:w-1/2">
+                  <div className="flex flex-col justify-center md:w-1/2 space-y-8">
 
-                    {/* Intro Text */}
-                    <div className="text-left">
-                      <h1 className="text-5xl md:text-7xl font-bold font-mono mb-6 text-schematic-primary tracking-tighter">
-                        Hello, I'm <br />
-                        <span className="text-schematic-accent">Alex Mitelman</span>
-                      </h1>
-                      <p className="text-xl md:text-2xl text-schematic-secondary max-w-xl font-mono leading-relaxed border-l-4 border-schematic-accent pl-6">
-                        Software Engineer specializing in information and computation assurance | Graduated Dec 2025
-                      </p>
+                    {/* Glass Container for Text */}
+                    <div className="border border-schematic-grid/50 rounded-2xl p-6 shadow-inner bg-schematic-bg/40 backdrop-blur-[1px] w-fit">
+                      <div className="text-left">
+                        <h1 className="text-5xl md:text-7xl font-bold font-mono mb-6 text-schematic-primary tracking-tighter">
+                          Hello, I'm <br />
+                          <span className="text-schematic-accent">Alex Mitelman</span>
+                        </h1>
+                        <p className="text-xl md:text-2xl text-schematic-secondary font-mono leading-relaxed border-l-4 border-schematic-accent pl-6">
+                          Software Engineer specializing in<br />
+                          Information and Computation Assurance<br />
+                          Graduated Dec 2025
+                        </p>
+                      </div>
                     </div>
 
-                    {/* Social Links (Middle Left) */}
+                    {/* Social Links (Outside Glass) */}
                     <div className="grid grid-cols-2 gap-4 max-w-md">
                       <a
                         href="mailto:alexmit450@gmail.com"
@@ -90,7 +103,7 @@ export default function Home() {
                         <span className="font-mono text-sm font-bold">RESUME</span>
                       </a>
                       <a
-                        href="https://github.com/alexmitelman"
+                        href="https://github.com/sapphiresnake"
                         target="_blank"
                         className="flex items-center space-x-3 p-3 rounded border border-schematic-grid text-schematic-secondary hover:text-schematic-accent hover:border-schematic-accent hover:bg-schematic-accent/10 transition-all group"
                       >
@@ -110,13 +123,15 @@ export default function Home() {
 
                   {/* Right Column: Image (Middle Right, Overlapping) */}
                   <div className="md:w-1/2 flex justify-center md:justify-end mt-12 md:mt-0 relative">
-                    <div className="relative w-72 h-72 md:w-[500px] md:h-[500px] group">
-                      <div className="relative w-full h-full p-2">
-                        <img
-                          src="/AI-me.png"
-                          alt="Alex Mitelman"
-                          className="w-full h-full object-contain mix-blend-screen hero-image transition-all duration-500"
-                        />
+                    <div className="border border-schematic-grid/50 rounded-2xl p-4 shadow-inner bg-schematic-bg/30 backdrop-blur-[1px] flex items-center justify-center">
+                      <div className="relative w-72 h-72 md:w-[500px] md:h-[500px] group">
+                        <div className="relative w-full h-full p-2">
+                          <img
+                            src="/AI-me.png"
+                            alt="Alex Mitelman"
+                            className="w-full h-full object-contain mix-blend-screen hero-image transition-all duration-500"
+                          />
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -125,11 +140,14 @@ export default function Home() {
 
             </section>
 
-
+            <TechStack
+              selectedTag={projectFilter}
+              onSelectTag={(tag) => setProjectFilter(prev => prev === tag ? null : tag)}
+            />
+            <SmartSearch externalFilter={projectFilter} onFilterChange={setProjectFilter} />
 
             <ExperienceLog />
             <EducationLog />
-            <SmartSearch />
             <DataUplink />
 
             {/* System Modules (Bottom) */}
