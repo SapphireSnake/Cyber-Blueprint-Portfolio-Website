@@ -1,9 +1,9 @@
-# Firefox Theme Inspired Portfolio Website
+# Firefox Inspired Portfolio Website
 
 A high-performance, immersive portfolio website built with Next.js, Tailwind CSS, and Framer Motion.
 
 Designed with a **"Schematic" aesthetic** inspired by the Firefox brand identity, featuring:
--   **Void & Fire Themes**: A dynamic color system that switches between a deep "Void" (Blue/Purple) and a vibrant "Fire" (Yellow/Red) aesthetic.
+-   **Dynamic Color System**: Switches between a deep **Blue/Purple** and a vibrant **Orange/Yellow** aesthetic.
 -   **Smooth Color Shifting**: Advanced CSS `@property` animations for fluid theme transitions.
 -   **Modern UI**: Glassmorphism, layered shadows, and interactive grid backgrounds.
 
