@@ -1,6 +1,7 @@
 import React, { useRef, useState, createContext, useContext, useEffect } from "react";
 import { cn } from "@/lib/utils";
 import { motion, useMotionValue, useSpring, useTransform, MotionValue, useMotionValueEvent } from "framer-motion";
+import { Filter } from "lucide-react";
 
 // --- Constants ---
 type Category = "Languages & Frameworks" | "Tools & Specialties";
@@ -110,7 +111,7 @@ function TechPill({ item, index, isSelected, onSelect }: {
         const threshold = 250; // BOOSTED Radius
 
         if (dist < threshold) {
-            const force = (1 - dist / threshold) * 120; // BOOSTED Force
+            const force = (1 - dist / threshold) * 60; // Reduced Force from 120
             return {
                 x: -(dx / dist) * force,
                 y: -(dy / dist) * force
@@ -219,22 +220,22 @@ export function TechStack({ onSelectTag, selectedTag }: { onSelectTag?: (tag: st
 
     return (
         <TechStackContext.Provider value={{ dragX, dragY, draggingItem, setDraggingItem, activeCard, setActiveCard, registerPill, itemRects }}>
-            <div className="w-full max-w-6xl mx-auto px-4 pt-4 pb-0 md:pt-8 md:pb-2">
+            <div id="skills" className="w-full max-w-6xl mx-auto px-4 pt-4 pb-0 md:pt-8 md:pb-2">
                 {/* Outer Glass Box */}
                 <div
-                    className="backdrop-blur-[2px] border border-schematic-grid rounded-3xl p-4 md:p-6 shadow-2xl relative z-10 bg-schematic-bg/50"
+                    className="glass-panel rounded-3xl p-4 md:p-6 relative z-10"
                 >
                     <h2 className="font-mono text-xl md:text-2xl text-schematic-accent mb-2 block tracking-wider uppercase font-bold ml-1">
                         Stacks I Build With
                     </h2>
                     <p className="font-mono text-sm text-schematic-secondary mb-6 ml-1 max-w-2xl">
-                        Frameworks and tools I have used to ship projects. <span className="text-schematic-accent opacity-80">[SELECT TO FILTER]</span>
+                        Frameworks and tools I have used to ship projects. <span className="text-schematic-accent opacity-80 inline-flex items-center ml-2">Click to <Filter className="w-4 h-4 ml-1" /></span>
                     </p>
                     <div className="flex flex-col md:flex-row gap-6 md:gap-8 items-start justify-center">
                         {/* Card 1: Languages & Frameworks */}
                         <div
                             className={cn(
-                                "flex-1 w-full border border-schematic-grid/50 rounded-2xl p-6 md:p-8 shadow-inner transition-all hover:shadow-lg hover:border-schematic-accent/30 relative bg-schematic-bg/40 backdrop-blur-[1px]",
+                                "flex-1 w-full glass-base rounded-2xl p-6 md:p-8 transition-all hover:shadow-lg hover:border-schematic-accent/30 relative",
                                 activeCard === "languages" ? "z-20" : "z-0"
                             )}
                         >
@@ -255,7 +256,7 @@ export function TechStack({ onSelectTag, selectedTag }: { onSelectTag?: (tag: st
                         {/* Card 2: Tools & Specialties */}
                         <div
                             className={cn(
-                                "flex-1 w-full border border-schematic-grid/50 rounded-2xl p-6 md:p-8 shadow-inner transition-all hover:shadow-lg hover:border-schematic-accent/30 relative bg-schematic-bg/30 backdrop-blur-[1px]",
+                                "flex-1 w-full glass-base rounded-2xl p-6 md:p-8 transition-all hover:shadow-lg hover:border-schematic-accent/30 relative",
                                 activeCard === "tools" ? "z-20" : "z-0"
                             )}
                         >
@@ -275,6 +276,6 @@ export function TechStack({ onSelectTag, selectedTag }: { onSelectTag?: (tag: st
                     </div>
                 </div>
             </div>
-        </TechStackContext.Provider>
+        </TechStackContext.Provider >
     );
 }

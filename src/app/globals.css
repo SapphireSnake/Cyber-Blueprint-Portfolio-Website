@@ -4,25 +4,86 @@
   --font-mono: var(--font-roboto-mono);
   --font-sans: var(--font-inter);
 
-  --color-schematic-bg: #003366;
-  --color-schematic-grid: rgba(255, 255, 255, 0.3);
-  --color-schematic-primary: #ffffff;
-  --color-schematic-secondary: #b3d9ff;
-  --color-schematic-accent: #ffffff;
+  /* Chromatic Light Theme (Clean/Distinct) */
+  --color-schematic-bg: #ffffff;
+  /* Pure White */
+  --color-schematic-grid: rgba(0, 0, 0, 0.2);
+  /* Subtle Grid - Darkened for visibility */
+  --color-schematic-primary: #09090b;
+  /* Zinc 950 */
+  --color-schematic-secondary: #52525b;
+  /* Zinc 600 */
+  --color-schematic-accent: #ea580c;
+  /* Orange 600 */
+
+  --gradient-chromatic: linear-gradient(to right, #facc15, #fb923c, #ef4444, #a855f7);
+  /* Yellow -> Orange -> Red -> Purple */
+
+  /* Glass Variables (Light Mode) */
+  --glass-base-bg: rgba(255, 255, 255, 0.9);
+  --glass-panel-bg: rgba(255, 255, 255, 0.8);
+  --glass-overlay-bg: rgba(255, 255, 255, 0.95);
+  --glass-border: rgba(0, 0, 0, 0.1);
+  --glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.1);
+
+  /* Holographic Glare Opacity - Removed in Light Mode */
+  /* --glare-opacity: 0; Removed, handled by display: none below */
 }
 
-/* Schematic (Dark) Theme Overrides */
+/* Force hide glare in light mode - Default state */
+/* Force hide glare in light mode - Default state */
+.holographic-glare-v2 {
+  background: none;
+  opacity: 0;
+  visibility: hidden;
+  display: none;
+}
+
+/* Chromatic Dark Theme (Premium/Polished) */
 .schematic-mode {
-  --color-schematic-bg: #0a0a0a;
-  --color-schematic-grid: #222222;
-  --color-schematic-primary: #ededed;
-  --color-schematic-secondary: #888888;
-  --color-schematic-accent: #00ff9d;
+  --color-schematic-bg: #030014;
+  /* Deep Space Dark */
+  --color-schematic-grid: rgba(255, 255, 255, 0.03);
+  /* Very Subtle Grid */
+  --color-schematic-primary: #ffffff;
+  /* Crisp White */
+  --color-schematic-secondary: #a1a1aa;
+  /* Zinc 400 */
+  --color-schematic-accent: #ff5e00;
+  /* Vibrant Orange */
+
+  /* Glass Variables (Dark Mode) */
+  /* Glass Variables (Dark Mode) */
+  --glass-base-bg: rgba(255, 255, 255, 0.02);
+  --glass-panel-bg: rgba(255, 255, 255, 0.03);
+  --glass-overlay-bg: rgba(10, 10, 15, 0.3);
+  --glass-border: rgba(255, 255, 255, 0.1);
+  --glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+
+  /* Holographic Glare Opacity */
+  --glare-opacity: 0.1;
+
+  /* Theme Flag for JS */
+  --is-dark-mode: 1;
+
   color-scheme: dark;
+}
+
+/* Show glare in dark mode */
+/* Show glare in dark mode */
+/* Show glare in dark mode */
+.schematic-mode .holographic-glare-v2 {
+  display: block;
+  visibility: visible;
+  opacity: 1;
+  /* Controlled by group-hover in Tailwind, but ensure base is visible to layout */
+  background: radial-gradient(circle at var(--mouse-x) var(--mouse-y), rgba(255, 255, 255, var(--glare-opacity)) 0%, transparent 50%);
+  mix-blend-mode: overlay;
 }
 
 :root {
   color-scheme: light;
+  --is-dark-mode: 0;
 }
 
 body {
@@ -38,4 +99,82 @@ body {
     linear-gradient(to bottom, var(--color-schematic-grid) 1px, transparent 1px);
 }
 
+/* Gradient Utilities */
+.text-gradient {
+  background: var(--gradient-chromatic);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  display: inline-block;
+  /* Ensures gradient applies correctly */
+}
+
+.bg-gradient-chromatic {
+  background: var(--gradient-chromatic);
+}
+
+.border-gradient {
+  border: 1px solid transparent;
+  background: linear-gradient(var(--color-schematic-bg), var(--color-schematic-bg)) padding-box,
+    var(--gradient-chromatic) border-box;
+}
+
+/* Standardized Glass System */
+.glass-base {
+  background: var(--glass-base-bg);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--glass-shadow);
+}
+
+.glass-panel {
+  background: var(--glass-panel-bg);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--glass-shadow);
+}
+
+.glass-overlay {
+  background: var(--glass-overlay-bg);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--glass-shadow);
+}
+
+/* Legacy Liquid Glass (Mapped to Panel for now, or kept for specific effect) */
+.glass-liquid {
+  background: var(--glass-panel-bg);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--glass-border);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  /* Keep subtle depth */
+  border-right: 1px solid rgba(0, 0, 0, 0.1);
+  box-shadow: var(--glass-shadow);
+  position: relative;
+  overflow: hidden;
+}
+
+.glass-liquid::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 100%;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.01) 50%, transparent 100%);
+  pointer-events: none;
+  z-index: -1;
+}
+
 /* Hero Image Styling - No filters applied for original colors */
+.hero-image {
+  mix-blend-mode: normal;
+}
+
+.schematic-mode .hero-image {
+  mix-blend-mode: screen;
+}

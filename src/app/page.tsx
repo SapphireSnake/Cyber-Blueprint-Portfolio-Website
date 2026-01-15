@@ -19,6 +19,8 @@ import { Mail, Github, Linkedin, FileText, Activity, Box, ChevronRight } from "l
 
 import { BootSequence } from "@/components/system/BootSequence";
 import { TechStack } from "@/components/features/TechStack";
+import { AboutSection } from "@/components/features/AboutSection";
+import { SectionReveal } from "@/components/ui/SectionReveal";
 
 export default function Home() {
   const [isLoaded, setIsLoaded] = useState(true);
@@ -35,6 +37,7 @@ export default function Home() {
   const [showTelemetry, setShowTelemetry] = useState(false);
   const [showDigitalTwin, setShowDigitalTwin] = useState(false);
   const [projectFilter, setProjectFilter] = useState<string | null>(null);
+  const [glowRadius, setGlowRadius] = useState(100);
 
   // 1. Run Handshake (Loading)
   if (!isLoaded) {
@@ -52,14 +55,14 @@ export default function Home() {
 
       {isLoaded && (
         <div className="animate-in fade-in duration-1000">
-          <GridBackground />
+          <GridBackground radius={glowRadius} />
           <SystemHeader />
           <MqttStream />
 
           <div className="container mx-auto px-4 pt-32 pb-20">
             {/* Central Hub Hero */}
             <section className="min-h-[80vh] flex flex-col justify-center relative mb-6">
-              <div className="border border-schematic-grid bg-schematic-bg/50 backdrop-blur-[2px] p-8 md:p-12 rounded-lg max-w-6xl mx-auto w-full relative overflow-hidden">
+              <div className="glass-liquid p-8 md:p-12 rounded-lg max-w-6xl mx-auto w-full relative overflow-hidden">
                 {/* Grid Line Decoration */}
                 <div className="absolute top-0 left-0 w-full h-px bg-schematic-grid" />
                 <div className="absolute bottom-0 left-0 w-full h-px bg-schematic-grid" />
@@ -71,11 +74,11 @@ export default function Home() {
                   <div className="flex flex-col justify-center md:w-1/2 space-y-8">
 
                     {/* Glass Container for Text */}
-                    <div className="border border-schematic-grid/50 rounded-2xl p-6 shadow-inner bg-schematic-bg/40 backdrop-blur-[1px] w-fit">
+                    <div className="glass-liquid rounded-2xl p-6 w-fit">
                       <div className="text-left">
                         <h1 className="text-5xl md:text-7xl font-bold font-mono mb-6 text-schematic-primary tracking-tighter">
                           Hello, I'm <br />
-                          <span className="text-schematic-accent">Alex Mitelman</span>
+                          <span className="text-gradient font-extrabold">Alex Mitelman</span>
                         </h1>
                         <p className="text-xl md:text-2xl text-schematic-secondary font-mono leading-relaxed border-l-4 border-schematic-accent pl-6">
                           Software Engineer specializing in<br />
@@ -89,7 +92,7 @@ export default function Home() {
                     <div className="grid grid-cols-2 gap-4 max-w-md">
                       <a
                         href="mailto:alexmit450@gmail.com"
-                        className="flex items-center space-x-3 p-3 rounded border border-schematic-grid text-schematic-secondary hover:text-schematic-accent hover:border-schematic-accent hover:bg-schematic-accent/10 transition-all group"
+                        className="glass-panel flex items-center space-x-3 p-3 rounded hover:text-schematic-accent hover:border-schematic-accent hover:bg-schematic-accent/10 transition-all group"
                       >
                         <Mail className="w-5 h-5" />
                         <span className="font-mono text-sm font-bold">EMAIL</span>
@@ -97,7 +100,7 @@ export default function Home() {
                       <a
                         href="/resume.pdf"
                         target="_blank"
-                        className="flex items-center space-x-3 p-3 rounded border border-schematic-grid text-schematic-secondary hover:text-schematic-accent hover:border-schematic-accent hover:bg-schematic-accent/10 transition-all group"
+                        className="glass-panel flex items-center space-x-3 p-3 rounded hover:text-schematic-accent hover:border-schematic-accent hover:bg-schematic-accent/10 transition-all group"
                       >
                         <FileText className="w-5 h-5" />
                         <span className="font-mono text-sm font-bold">RESUME</span>
@@ -105,7 +108,7 @@ export default function Home() {
                       <a
                         href="https://github.com/sapphiresnake"
                         target="_blank"
-                        className="flex items-center space-x-3 p-3 rounded border border-schematic-grid text-schematic-secondary hover:text-schematic-accent hover:border-schematic-accent hover:bg-schematic-accent/10 transition-all group"
+                        className="glass-panel flex items-center space-x-3 p-3 rounded hover:text-schematic-accent hover:border-schematic-accent hover:bg-schematic-accent/10 transition-all group"
                       >
                         <Github className="w-5 h-5" />
                         <span className="font-mono text-sm font-bold">GITHUB</span>
@@ -113,7 +116,7 @@ export default function Home() {
                       <a
                         href="https://linkedin.com/in/alexmitelman"
                         target="_blank"
-                        className="flex items-center space-x-3 p-3 rounded border border-schematic-grid text-schematic-secondary hover:text-schematic-accent hover:border-schematic-accent hover:bg-schematic-accent/10 transition-all group"
+                        className="glass-panel flex items-center space-x-3 p-3 rounded hover:text-schematic-accent hover:border-schematic-accent hover:bg-schematic-accent/10 transition-all group"
                       >
                         <Linkedin className="w-5 h-5" />
                         <span className="font-mono text-sm font-bold">LINKEDIN</span>
@@ -123,13 +126,13 @@ export default function Home() {
 
                   {/* Right Column: Image (Middle Right, Overlapping) */}
                   <div className="md:w-1/2 flex justify-center md:justify-end mt-12 md:mt-0 relative">
-                    <div className="border border-schematic-grid/50 rounded-2xl p-4 shadow-inner bg-schematic-bg/30 backdrop-blur-[1px] flex items-center justify-center">
+                    <div className="glass-liquid rounded-2xl p-4 flex items-center justify-center">
                       <div className="relative w-72 h-72 md:w-[500px] md:h-[500px] group">
                         <div className="relative w-full h-full p-2">
                           <img
                             src="/AI-me.png"
                             alt="Alex Mitelman"
-                            className="w-full h-full object-contain mix-blend-screen hero-image transition-all duration-500"
+                            className="w-full h-full object-contain hero-image transition-all duration-500"
                           />
                         </div>
                       </div>
@@ -140,21 +143,38 @@ export default function Home() {
 
             </section>
 
-            <TechStack
-              selectedTag={projectFilter}
-              onSelectTag={(tag) => setProjectFilter(prev => prev === tag ? null : tag)}
-            />
-            <SmartSearch externalFilter={projectFilter} onFilterChange={setProjectFilter} />
+            <SectionReveal>
+              <AboutSection />
+            </SectionReveal>
 
-            <ExperienceLog />
-            <EducationLog />
-            <DataUplink />
+            <SectionReveal>
+              <TechStack
+                selectedTag={projectFilter}
+                onSelectTag={(tag) => setProjectFilter(prev => prev === tag ? null : tag)}
+              />
+            </SectionReveal>
+
+            <SectionReveal>
+              <SmartSearch externalFilter={projectFilter} onFilterChange={setProjectFilter} />
+            </SectionReveal>
+
+            <SectionReveal>
+              <ExperienceLog />
+            </SectionReveal>
+
+            <SectionReveal>
+              <EducationLog />
+            </SectionReveal>
+
+            <SectionReveal>
+              <DataUplink />
+            </SectionReveal>
 
             {/* System Modules (Bottom) */}
             <div className="mt-20 grid grid-cols-1 md:grid-cols-2 gap-6 w-full max-w-4xl mx-auto mb-20">
               <button
                 onClick={() => setShowTelemetry(true)}
-                className="flex items-center justify-between p-6 border border-schematic-grid rounded-lg bg-schematic-bg/50 hover:border-schematic-accent hover:bg-schematic-accent/5 transition-all group text-left"
+                className="flex items-center justify-between p-6 glass-panel rounded-lg hover:border-schematic-accent hover:bg-schematic-accent/5 transition-all group text-left"
               >
                 <div className="flex items-center space-x-6">
                   <div className="p-3 bg-schematic-accent/10 rounded-lg text-schematic-accent">
@@ -170,7 +190,7 @@ export default function Home() {
 
               <button
                 onClick={() => setShowDigitalTwin(true)}
-                className="flex items-center justify-between p-6 border border-schematic-grid rounded-lg bg-schematic-bg/50 hover:border-schematic-accent hover:bg-schematic-accent/5 transition-all group text-left"
+                className="flex items-center justify-between p-6 glass-panel rounded-lg hover:border-schematic-accent hover:bg-schematic-accent/5 transition-all group text-left"
               >
                 <div className="flex items-center space-x-6">
                   <div className="p-3 bg-schematic-accent/10 rounded-lg text-schematic-accent">
@@ -186,7 +206,7 @@ export default function Home() {
             </div>
           </div>
 
-          <SystemFooter />
+          <SystemFooter radius={glowRadius} setRadius={setGlowRadius} />
           <TerminalCLI />
           <GameOverlay />
 

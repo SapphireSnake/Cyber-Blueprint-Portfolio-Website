@@ -54,7 +54,7 @@ export function TerminalCLI() {
         return (
             <button
                 onClick={() => setIsOpen(true)}
-                className="fixed bottom-20 right-4 z-50 bg-schematic-bg border border-schematic-accent text-schematic-accent p-3 rounded-full shadow-[0_0_15px_rgba(0,255,157,0.3)] hover:bg-schematic-accent hover:text-schematic-bg transition-all"
+                className="fixed bottom-[80px] right-4 z-50 bg-schematic-bg border border-schematic-accent text-schematic-accent p-3 rounded-full shadow-[0_0_15px_var(--color-schematic-accent)] hover:bg-schematic-accent hover:text-schematic-bg transition-all"
             >
                 <Terminal className="w-6 h-6" />
             </button>
@@ -63,7 +63,7 @@ export function TerminalCLI() {
 
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4">
-            <div className="w-full max-w-2xl bg-schematic-bg border border-schematic-grid rounded-lg shadow-2xl overflow-hidden flex flex-col h-[500px]">
+            <div className="w-full max-w-2xl glass-overlay rounded-lg overflow-hidden flex flex-col h-[500px]">
                 {/* Header */}
                 <div className="bg-schematic-grid/10 border-b border-schematic-grid p-2 flex justify-between items-center">
                     <div className="flex items-center space-x-2 px-2">

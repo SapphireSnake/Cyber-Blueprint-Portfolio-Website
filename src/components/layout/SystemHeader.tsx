@@ -3,6 +3,8 @@
 import { useState, useEffect } from "react";
 import { cn } from "@/lib/utils";
 import { useTheme } from "@/context/ThemeContext";
+import { Download } from "lucide-react";
+import { ScrollProgress } from "@/components/ui/ScrollProgress";
 
 export function SystemHeader() {
     const [scrolled, setScrolled] = useState(false);
@@ -68,8 +70,7 @@ export function SystemHeader() {
     return (
         <header
             className={cn(
-                "fixed top-0 left-0 right-0 z-50 border-b border-schematic-grid transition-all duration-300 backdrop-blur-md",
-                scrolled ? "bg-schematic-bg/90 py-2" : "bg-schematic-bg py-4"
+                "fixed top-0 left-0 right-0 z-50 transition-all duration-300 glass-base py-2"
             )}
         >
             <div className="container mx-auto px-4">
@@ -78,7 +79,7 @@ export function SystemHeader() {
                     <div className="flex items-center space-x-4">
                         <div className="flex flex-col">
                             <h1 className="text-xl md:text-2xl font-bold font-mono text-schematic-primary tracking-tight">
-                                ALEX_MITELMAN <span className="text-schematic-accent text-sm md:text-base font-normal ml-2 opacity-80">:: Backend DevOps and Embedded Engineer</span>
+                                <span className="text-gradient">ALEX_MITELMAN</span> <span className="text-schematic-accent text-sm md:text-base font-normal ml-2 opacity-80">:: Backend DevOps and Embedded Engineer</span>
                             </h1>
                         </div>
                     </div>
@@ -86,6 +87,30 @@ export function SystemHeader() {
                     {/* Right: Navigation & Resume */}
                     <div className="flex items-center space-x-6">
                         <nav className="hidden md:flex items-center space-x-6 text-sm font-mono text-schematic-secondary">
+                            <button
+                                onClick={() => handleScrollTo("about")}
+                                className="hover:text-schematic-accent transition-colors uppercase"
+                            >
+                                About
+                            </button>
+                            <button
+                                onClick={() => handleScrollTo("skills")}
+                                className="hover:text-schematic-accent transition-colors uppercase"
+                            >
+                                Skills
+                            </button>
+                            <button
+                                onClick={() => handleScrollTo("experience")}
+                                className="hover:text-schematic-accent transition-colors uppercase"
+                            >
+                                Experience
+                            </button>
+                            <button
+                                onClick={() => handleScrollTo("education")}
+                                className="hover:text-schematic-accent transition-colors uppercase"
+                            >
+                                Education
+                            </button>
                             <button
                                 onClick={() => handleScrollTo("smart-search")}
                                 className="hover:text-schematic-accent transition-colors uppercase"
@@ -153,13 +178,15 @@ export function SystemHeader() {
 
                         <button
                             onClick={() => window.open("/resume.pdf", "_blank")}
-                            className="bg-transparent border border-schematic-accent text-schematic-accent font-bold font-mono text-sm px-4 py-2 rounded hover:bg-schematic-accent/10 transition-colors uppercase tracking-wide"
+                            className="bg-transparent border border-schematic-accent text-schematic-accent font-bold font-mono text-sm px-4 py-2 rounded hover:bg-schematic-accent/10 transition-colors uppercase tracking-wide flex items-center space-x-2"
                         >
-                            RESUME
+                            <Download className="w-4 h-4" />
+                            <span>RESUME</span>
                         </button>
                     </div>
                 </div>
             </div>
+            <ScrollProgress />
         </header>
     );
 }

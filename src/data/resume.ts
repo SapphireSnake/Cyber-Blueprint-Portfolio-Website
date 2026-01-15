@@ -34,15 +34,9 @@ export const RESUME = {
             location: "Lewis Center, OH",
             period: "March 2025 – October 2025",
             logo: "/logos/QxSoft logo.png",
+            description: "QxSoft develops software for Coordinate Measuring Machines and I was a part of their only software development team which consisted of my senior developer and the president of the company. Because the team was so small, I was expected to manage multiple R&D projects independently while also assisting on time sensitive tasks for the main software of the company. Working in an industry where there is zero margin for error taught me how to be reliable and fulfill tasks with validation logic for task completion.",
             stack: ["IoT", "C#", "C++", "React", "BLE"],
-            achievements: [
-                "Fully prototyped 3 iterations of a full-stack IoT humiture and collision detection system achieving greater than 120-day battery life through deep sleep and hardware interrupt optimization.",
-                "Engineered a C# companion application for real-time sensor visualization, device configuration, TCP-based data streaming, and designed a custom JSON protocol over BLE/TCP.",
-                "Implemented custom JSON exports for 16+ different feature types including Cloud-to-Surface and Tolerance reports by refactoring core C++ systems.",
-                "Simulated over 1,200 hours of continuous CMM operation using PLC hardware and PowerShell scripts to display real-world usage.",
-                "Authored a C++ Smart Cylinder algorithm that calculates measurement boundaries to eliminate 100% of path-planning and out-of-range errors.",
-                "Reworked cross-application communication layers using named pipes to sequentially query report status, ensuring data integrity.",
-            ],
+            achievements: [],
         },
         {
             company: "The Ohio State University",
@@ -71,13 +65,12 @@ export const RESUME = {
     projects: [
         {
             name: "CMM-Sense IoT Device",
-            description: "Digital Twin of the industrial sensor node.",
+            description: "Real-time acceleration and humiture data broadcast.",
             tech: ["IoT", "Three.js", "React", "WebGL"],
             link: "https://github.com/alexmitelman/cmm-sense",
             date: "2024",
             details: [
-                "Real-time acceleration and humiture data broadcast",
-                "Interactive 3D visualization",
+                "Digital Twin of the industrial sensor node",
                 "Hardware abstraction layer"
             ]
         },
@@ -104,7 +97,7 @@ export const RESUME = {
             ],
         },
         {
-            name: "The Legend of Zelda with Portals",
+            name: "The Legend of Zelda\nwith Portals",
             tech: ["C#"],
             date: "Jan 2025",
             description: "2D Zelda-inspired game with dynamic rooms and real-time controls.",
@@ -114,6 +107,41 @@ export const RESUME = {
                 "Collaborated to create a 2D Zelda-inspired game with dynamic rooms, real-time controls, and interactive objectives.",
                 "Applied Agile methodologies and SDLC principles throughout the development and debugging phases.",
             ],
+        },
+        {
+            name: "CLASSIFIED_PROJECT_ALPHA",
+            tech: ["Redacted"],
+            date: "Est. 2026",
+            description: "Advanced neural interface prototype. Access restricted.",
+            details: ["Clearance Level 5 Required"],
+        },
+        {
+            name: "SYSTEM_OPTIMIZER_V2",
+            tech: ["Rust", "WASM"],
+            date: "Pending",
+            description: "High-performance system resource allocator.",
+            details: ["In Development"],
+        },
+        {
+            name: "NETWORK_SENTINEL",
+            tech: ["Go", "eBPF"],
+            date: "Pending",
+            description: "Real-time packet inspection and anomaly detection.",
+            details: ["In Development"],
+        },
+        {
+            name: "QUANTUM_SIM",
+            tech: ["Python", "Qiskit"],
+            date: "Pending",
+            description: "Quantum circuit simulator for educational purposes.",
+            details: ["In Development"],
+        },
+        {
+            name: "DATA_VAULT",
+            tech: ["Solidity", "IPFS"],
+            date: "Pending",
+            description: "Decentralized encrypted storage solution.",
+            details: ["In Development"],
         },
     ],
     skills: {

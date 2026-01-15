@@ -3,9 +3,8 @@
 import { useState, useEffect, useRef } from "react";
 import { motion } from "framer-motion";
 
-export function GridBackground() {
+export function GridBackground({ radius = 100 }: { radius?: number }) {
     const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
-    const [radius, setRadius] = useState(300);
     const [packets, setPackets] = useState<{ id: number; x: number; y: number; axis: 'x' | 'y'; direction: 1 | -1; distance: number }[]>([]);
     const containerRef = useRef<HTMLDivElement>(null);
 
@@ -86,7 +85,20 @@ export function GridBackground() {
                     className="absolute inset-0 bg-[linear-gradient(to_right,#222_1px,transparent_1px),linear-gradient(to_bottom,#222_1px,transparent_1px)] bg-[size:40px_40px]"
                 />
 
-                {/* Glow Grid (Dynamic Color) - Masked by Cursor */}
+                {/* Secondary Glow (Larger, Fainter, Breathing) */}
+                <motion.div
+                    className="absolute inset-0 bg-[size:40px_40px]"
+                    style={{
+                        backgroundImage: `linear-gradient(to right, var(--color-schematic-accent) 1px, transparent 1px), linear-gradient(to bottom, var(--color-schematic-accent) 1px, transparent 1px)`,
+                        maskImage: `radial-gradient(${radius * 1.5}px circle at ${mousePosition.x}px ${mousePosition.y}px, black, transparent)`,
+                        WebkitMaskImage: `radial-gradient(${radius * 1.5}px circle at ${mousePosition.x}px ${mousePosition.y}px, black, transparent)`,
+                        opacity: 0.3,
+                    }}
+                    animate={{ opacity: [0.2, 0.4, 0.2] }}
+                    transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+                />
+
+                {/* Primary Glow (Focused, Dynamic Color) */}
                 <motion.div
                     className="absolute inset-0 bg-[size:40px_40px]"
                     style={{
@@ -96,6 +108,15 @@ export function GridBackground() {
                     }}
                     animate={{ opacity: 1 }}
                     transition={{ duration: 0.5 }}
+                />
+
+                {/* Light Mode Glow Booster (Radial Gradient Background) */}
+                <motion.div
+                    className="absolute inset-0 pointer-events-none mix-blend-plus-lighter"
+                    style={{
+                        background: `radial-gradient(circle ${radius}px at ${mousePosition.x}px ${mousePosition.y}px, var(--color-schematic-accent), transparent)`,
+                        opacity: 0.15, // Subtle boost
+                    }}
                 />
 
                 {/* Data Packets (Moving Particles with Gradient Trails) (Shooting Star Effect) */}
@@ -155,20 +176,6 @@ export function GridBackground() {
                         </div>
                     );
                 })}
-            </div>
-
-            {/* Control Slider - Moved OUT of z-[-1] container */}
-            <div className="fixed bottom-4 right-4 z-50 flex items-center space-x-2 bg-schematic-bg/90 border border-schematic-grid p-3 rounded backdrop-blur-md shadow-lg pointer-events-auto">
-                <span className="text-xs font-mono text-schematic-secondary">GLOW_RANGE</span>
-                <input
-                    type="range"
-                    min="100"
-                    max="800"
-                    value={radius}
-                    onChange={(e) => setRadius(Number(e.target.value))}
-                    className="w-32 h-1 bg-schematic-grid rounded-lg appearance-none cursor-pointer accent-schematic-accent"
-                />
-                <span className="text-xs font-mono text-schematic-accent w-12 text-right">{radius}px</span>
             </div>
         </>
     );

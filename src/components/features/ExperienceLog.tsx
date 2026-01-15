@@ -16,7 +16,7 @@ const getStackIcon = (tech: string) => {
 
 export function ExperienceLog() {
     return (
-        <section className="mb-20 relative max-w-4xl mx-auto">
+        <section id="experience" className="mb-20 relative max-w-4xl mx-auto">
             {/* Section Header */}
             <div className="flex items-center space-x-4 mb-8">
                 <div className="h-px bg-schematic-grid flex-grow" />
@@ -28,12 +28,12 @@ export function ExperienceLog() {
             </div>
 
             {/* Main Container (Large Rectangle) */}
-            <div className="border border-schematic-grid bg-schematic-bg/50 backdrop-blur-sm p-6 md:p-8 rounded-lg space-y-6">
+            <div className="glass-panel p-6 md:p-8 rounded-lg space-y-6">
                 {RESUME.experience.map((job, index) => (
                     // Inner Card (Rectangle inside)
                     <div
                         key={index}
-                        className="group border border-schematic-grid/50 bg-black/20 p-6 rounded hover:border-schematic-accent/50 transition-all duration-300"
+                        className="group glass-base p-6 rounded hover:border-schematic-accent/50 transition-all duration-300"
                     >
                         <div className="flex flex-col md:flex-row gap-8 items-center md:items-start">
                             {/* Logo Column */}
@@ -84,6 +84,12 @@ export function ExperienceLog() {
                                             </span>
                                         ))}
                                     </div>
+                                )}
+
+                                {job.description && (
+                                    <p className="text-schematic-secondary/90 font-mono text-sm leading-relaxed mb-4">
+                                        {job.description}
+                                    </p>
                                 )}
 
                                 <ul className="space-y-2">

@@ -44,3 +44,7 @@
         return <div>...</div>;
     }
     ```
+
+## Content Guidelines
+-   **Informative Headers**: When writing headers for informative sections (like "About" or "Bio"), avoid thematic jargon. Use clear, normal language to describe the content (e.g., "Who I Am" instead of "SYSTEM_IDENTITY").
+

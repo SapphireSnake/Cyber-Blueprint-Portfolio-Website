@@ -134,7 +134,7 @@ export function CmmSenseVisual() {
                             animate={{ opacity: 1, scale: 1 }}
                             exit={{ opacity: 0, scale: 0.8 }}
                             transition={{ duration: 0.5 }}
-                            className="absolute top-1/2 right-[-350px] -translate-y-1/2 z-20"
+                            className="absolute top-1/2 right-1 md:right-6 -translate-y-1/2 z-20"
                             onClick={toggleWave} // Toggle wave style on click
                         >
                             <div className="relative group/monitor">

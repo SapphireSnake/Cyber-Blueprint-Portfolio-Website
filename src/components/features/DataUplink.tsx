@@ -32,7 +32,7 @@ export function DataUplink() {
                     <span>ESTABLISH_DATA_UPLINK</span>
                 </div>
 
-                <form onSubmit={handleSubmit} className="space-y-6 border border-schematic-grid p-8 rounded-lg bg-schematic-bg/50 backdrop-blur-sm relative overflow-hidden">
+                <form onSubmit={handleSubmit} className="space-y-6 glass-panel p-8 rounded-lg relative overflow-hidden">
                     {/* Corner Accents */}
                     <div className="absolute top-0 left-0 w-2 h-2 border-t border-l border-schematic-accent" />
                     <div className="absolute top-0 right-0 w-2 h-2 border-t border-r border-schematic-accent" />

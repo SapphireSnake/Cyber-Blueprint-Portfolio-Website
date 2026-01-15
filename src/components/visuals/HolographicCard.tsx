@@ -18,6 +18,17 @@ export function HolographicCard({ children, className, onClick }: HolographicCar
     const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
         if (!ref.current) return;
 
+        // Check if we are in dark mode (schematic-mode)
+        // We use getComputedStyle to read the CSS variable set in globals.css
+        const isDarkMode = getComputedStyle(document.documentElement).getPropertyValue('--is-dark-mode').trim() === '1';
+
+        if (!isDarkMode) {
+            setRotateX(0);
+            setRotateY(0);
+            setGlarePosition({ x: 50, y: 50 });
+            return;
+        }
+
         const rect = ref.current.getBoundingClientRect();
         const x = e.clientX - rect.left;
         const y = e.clientY - rect.top;
@@ -60,22 +71,24 @@ export function HolographicCard({ children, className, onClick }: HolographicCar
             transition={{ type: "spring", stiffness: 300, damping: 20 }}
         >
             <motion.div
-                className="relative w-full h-full"
+                className="holographic-card-inner relative w-full h-full"
                 style={{
                     rotateX,
                     rotateY,
                 }}
                 transition={{ type: "tween", ease: "linear", duration: 0.1 }}
             >
-                {children}
+                <div className="relative z-10">
+                    {children}
+                </div>
 
                 {/* Glare Overlay */}
                 <div
-                    className="absolute inset-0 pointer-events-none rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                    className="holographic-glare-v2 absolute inset-0 pointer-events-none rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300"
                     style={{
-                        background: `radial-gradient(circle at ${glarePosition.x}% ${glarePosition.y}%, rgba(255,255,255,0.1) 0%, transparent 50%)`,
-                        mixBlendMode: "overlay",
-                    }}
+                        "--mouse-x": `${glarePosition.x}%`,
+                        "--mouse-y": `${glarePosition.y}%`,
+                    } as React.CSSProperties}
                 />
             </motion.div>
         </motion.div>

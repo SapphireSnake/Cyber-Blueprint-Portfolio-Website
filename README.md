@@ -8,7 +8,10 @@ A high-performance, immersive portfolio website built with Next.js, Tailwind CSS
 - **Interactive Games**: Includes "Python Snake" and "Space Run 3" (React Three Fiber).
 - **Live Telemetry**: Skill matrix displayed as system modules.
 - **Digital Twin**: 3D visualization of system architecture.
-- **Smart Search**: Terminal-style project filtering.
+- **Smart Search**: Terminal-style project# Portfolio Website
+
+> [!NOTE]
+> **Privacy**: Documentation and sensitive files in `docs/` are excluded from the public repository.
 
 ## Getting Started
 
