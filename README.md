@@ -1,14 +1,11 @@
-# Cyber_Inspired_Portfolio_Website
+# Firefox Theme Inspired Portfolio Website
 
-A high-performance, immersive portfolio website built with Next.js, Tailwind CSS, and Framer Motion. Designed to look like a futuristic system interface ("Schematic" aesthetic).
+A high-performance, immersive portfolio website built with Next.js, Tailwind CSS, and Framer Motion.
 
-## Features
-
-- **System Schematic Theme**: Blueprint-style visuals with grid backgrounds and glowing elements.
-- **Interactive Games**: Includes "Python Snake" and "Space Run 3" (React Three Fiber).
-- **Live Telemetry**: Skill matrix displayed as system modules.
-- **Digital Twin**: 3D visualization of system architecture.
-- **Smart Search**: Terminal-style project# Portfolio Website
+Designed with a **"Schematic" aesthetic** inspired by the Firefox brand identity, featuring:
+-   **Void & Fire Themes**: A dynamic color system that switches between a deep "Void" (Blue/Purple) and a vibrant "Fire" (Yellow/Red) aesthetic.
+-   **Smooth Color Shifting**: Advanced CSS `@property` animations for fluid theme transitions.
+-   **Modern UI**: Glassmorphism, layered shadows, and interactive grid backgrounds.
 
 > [!NOTE]
 > **Privacy**: Documentation and sensitive files in `docs/` are excluded from the public repository.
