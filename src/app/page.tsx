@@ -128,7 +128,7 @@ export default function Home() {
                       <div className="relative w-72 h-72 md:w-[500px] md:h-[500px] group">
                         <div className="relative w-full h-full p-2">
                           <img
-                            src="/AI-me.png"
+                            src="/alex-mitelman.png"
                             alt="Alex Mitelman"
                             className="w-full h-full object-contain hero-image transition-all duration-500"
                           />
