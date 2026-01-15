@@ -20,7 +20,7 @@ export function ExperienceLog() {
             {/* Section Header */}
             <div className="flex items-center space-x-4 mb-8">
                 <div className="h-px bg-schematic-grid flex-grow" />
-                <div className="flex items-center space-x-2 text-schematic-accent">
+                <div className="flex items-center space-x-2 text-schematic-primary">
                     <Terminal className="w-5 h-5" />
                     <h2 className="text-2xl font-bold font-mono tracking-wider">OPERATIONAL_HISTORY</h2>
                 </div>

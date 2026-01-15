@@ -54,9 +54,9 @@ export function TerminalCLI() {
         return (
             <button
                 onClick={() => setIsOpen(true)}
-                className="fixed bottom-[80px] right-4 z-50 bg-schematic-bg border border-schematic-accent text-schematic-accent p-3 rounded-full shadow-[0_0_15px_var(--color-schematic-accent)] hover:bg-schematic-accent hover:text-schematic-bg transition-all"
+                className="fixed bottom-[80px] right-4 z-50 bg-schematic-bg border-gradient-void p-3 rounded-full shadow-[0_0_15px_rgba(0,83,159,0.5)] hover:bg-schematic-accent/10 transition-all"
             >
-                <Terminal className="w-6 h-6" />
+                <Terminal className="w-6 h-6 text-[#00539F]" />
             </button>
         );
     }

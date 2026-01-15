@@ -189,8 +189,8 @@ function TechPill({ item, index, isSelected, onSelect }: {
                         className={cn(
                             "flex items-center space-x-2 px-4 py-2 rounded-full shadow-sm border transition-all duration-300",
                             isSelected
-                                ? "ring-2 ring-schematic-accent ring-offset-2 ring-offset-schematic-bg shadow-[0_0_15px_var(--color-schematic-accent)] scale-110"
-                                : "border-schematic-grid/30 hover:border-schematic-accent/50"
+                                ? "ring-2 ring-[#00539F] ring-offset-2 ring-offset-schematic-bg shadow-[0_0_15px_rgba(0,83,159,0.5)] scale-110"
+                                : "border-schematic-grid/30 hover:border-[#00539F]/50"
                         )}
                         style={{ backgroundColor: item.color }} // 3. Float Wrapper (Visuals)
                     >
@@ -225,17 +225,17 @@ export function TechStack({ onSelectTag, selectedTag }: { onSelectTag?: (tag: st
                 <div
                     className="glass-panel rounded-3xl p-4 md:p-6 relative z-10"
                 >
-                    <h2 className="font-mono text-xl md:text-2xl text-schematic-accent mb-2 block tracking-wider uppercase font-bold ml-1">
+                    <h2 className="font-mono text-xl md:text-2xl text-gradient-void mb-2 block tracking-wider uppercase font-bold ml-1">
                         Stacks I Build With
                     </h2>
                     <p className="font-mono text-sm text-schematic-secondary mb-6 ml-1 max-w-2xl">
-                        Frameworks and tools I have used to ship projects. <span className="text-schematic-accent opacity-80 inline-flex items-center ml-2">Click to <Filter className="w-4 h-4 ml-1" /></span>
+                        Frameworks and tools I have used to ship projects. <span className="text-[#00539F] opacity-80 inline-flex items-center ml-2">Click to <Filter className="w-4 h-4 ml-1" /></span>
                     </p>
                     <div className="flex flex-col md:flex-row gap-6 md:gap-8 items-start justify-center">
                         {/* Card 1: Languages & Frameworks */}
                         <div
                             className={cn(
-                                "flex-1 w-full glass-base rounded-2xl p-6 md:p-8 transition-all hover:shadow-lg hover:border-schematic-accent/30 relative",
+                                "flex-1 w-full glass-base rounded-2xl p-6 md:p-8 transition-all hover:shadow-lg hover:border-[#00539F]/30 relative",
                                 activeCard === "languages" ? "z-20" : "z-0"
                             )}
                         >
@@ -256,7 +256,7 @@ export function TechStack({ onSelectTag, selectedTag }: { onSelectTag?: (tag: st
                         {/* Card 2: Tools & Specialties */}
                         <div
                             className={cn(
-                                "flex-1 w-full glass-base rounded-2xl p-6 md:p-8 transition-all hover:shadow-lg hover:border-schematic-accent/30 relative",
+                                "flex-1 w-full glass-base rounded-2xl p-6 md:p-8 transition-all hover:shadow-lg hover:border-[#00539F]/30 relative",
                                 activeCard === "tools" ? "z-20" : "z-0"
                             )}
                         >

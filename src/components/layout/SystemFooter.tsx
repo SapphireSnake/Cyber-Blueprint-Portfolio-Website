@@ -81,13 +81,13 @@ export function SystemFooter({ radius, setRadius }: { radius: number; setRadius:
                     <span className="hidden md:inline">GLOW_RANGE</span>
                     <input
                         type="range"
-                        min="100"
+                        min="0"
                         max="800"
                         value={radius}
                         onChange={(e) => setRadius(Number(e.target.value))}
                         className="w-24 md:w-32 h-1 bg-schematic-grid rounded-lg appearance-none cursor-pointer accent-schematic-accent"
                     />
-                    <span className="text-schematic-accent w-8 md:w-12 text-right">{radius}px</span>
+                    <span className="text-gradient-void w-8 md:w-12 text-right">{radius}px</span>
                 </div>
             </div>
         </footer>

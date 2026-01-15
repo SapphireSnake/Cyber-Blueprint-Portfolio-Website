@@ -79,7 +79,7 @@ export function SystemHeader() {
                     <div className="flex items-center space-x-4">
                         <div className="flex flex-col">
                             <h1 className="text-xl md:text-2xl font-bold font-mono text-schematic-primary tracking-tight">
-                                <span className="text-gradient">ALEX_MITELMAN</span> <span className="text-schematic-accent text-sm md:text-base font-normal ml-2 opacity-80">:: Backend DevOps and Embedded Engineer</span>
+                                <span className="text-gradient">ALEX_MITELMAN</span> <span className="text-schematic-secondary text-sm md:text-base font-normal ml-2 opacity-80">:: Backend DevOps and Embedded Engineer</span>
                             </h1>
                         </div>
                     </div>
@@ -100,6 +100,12 @@ export function SystemHeader() {
                                 Skills
                             </button>
                             <button
+                                onClick={() => handleScrollTo("smart-search")}
+                                className="hover:text-schematic-accent transition-colors uppercase"
+                            >
+                                Projects
+                            </button>
+                            <button
                                 onClick={() => handleScrollTo("experience")}
                                 className="hover:text-schematic-accent transition-colors uppercase"
                             >
@@ -110,12 +116,6 @@ export function SystemHeader() {
                                 className="hover:text-schematic-accent transition-colors uppercase"
                             >
                                 Education
-                            </button>
-                            <button
-                                onClick={() => handleScrollTo("smart-search")}
-                                className="hover:text-schematic-accent transition-colors uppercase"
-                            >
-                                Projects
                             </button>
                             <button
                                 onClick={() => handleScrollTo("data-uplink")}
@@ -178,10 +178,10 @@ export function SystemHeader() {
 
                         <button
                             onClick={() => window.open("/resume.pdf", "_blank")}
-                            className="bg-transparent border border-schematic-accent text-schematic-accent font-bold font-mono text-sm px-4 py-2 rounded hover:bg-schematic-accent/10 transition-colors uppercase tracking-wide flex items-center space-x-2"
+                            className="bg-transparent border-gradient-void font-bold font-mono text-sm px-4 py-2 rounded hover:bg-schematic-accent/10 transition-colors uppercase tracking-wide flex items-center space-x-2"
                         >
-                            <Download className="w-4 h-4" />
-                            <span>RESUME</span>
+                            <Download className="w-4 h-4 text-[#00539F]" />
+                            <span className="text-gradient-void">RESUME</span>
                         </button>
                     </div>
                 </div>

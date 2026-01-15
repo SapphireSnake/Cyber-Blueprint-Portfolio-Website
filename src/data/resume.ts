@@ -20,7 +20,7 @@ export const RESUME = {
         {
             school: "New Albany High School",
             degree: "High School Diploma",
-            specialization: "Engineering & Computer Science",
+
             gpa: "4.0/4.0",
             honors: "Summa Cum Laude",
             graduation: "May 2022",
@@ -55,11 +55,9 @@ export const RESUME = {
             location: "Columbus, OH",
             period: "Jul 2022 – Sep 2022",
             logo: "/logos/JSET logo.png",
+            description: "My biggest takeaway from this role was how to handle myself in an active engineering environment. I was responsible for installing temperature controls, IP surveillance, and wireless network and server infrastructure, which required following strict engineering protocols at several notable data centers in Columbus Ohio.",
             stack: ["HVAC", "Networking", "Hardware"],
-            achievements: [
-                "Executed large-scale temperature control installations for AWS and Google data centers focusing on commercial HVAC and cooling efficiency.",
-                "Installed surveillance devices and Wi-Fi networks at an industrial scale and learned technical engineering practices.",
-            ],
+            achievements: [],
         },
     ],
     projects: [

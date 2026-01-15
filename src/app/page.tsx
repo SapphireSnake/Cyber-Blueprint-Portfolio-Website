@@ -62,29 +62,27 @@ export default function Home() {
           <div className="container mx-auto px-4 pt-32 pb-20">
             {/* Central Hub Hero */}
             <section className="min-h-[80vh] flex flex-col justify-center relative mb-6">
-              <div className="glass-liquid p-8 md:p-12 rounded-lg max-w-6xl mx-auto w-full relative overflow-hidden">
-                {/* Grid Line Decoration */}
-                <div className="absolute top-0 left-0 w-full h-px bg-schematic-grid" />
-                <div className="absolute bottom-0 left-0 w-full h-px bg-schematic-grid" />
-                <div className="absolute left-0 top-0 h-full w-px bg-schematic-grid" />
-                <div className="absolute right-0 top-0 h-full w-px bg-schematic-grid" />
+              <div className="glass-panel p-8 md:p-12 rounded-2xl max-w-6xl mx-auto w-full relative">
 
                 <div className="flex flex-col md:flex-row items-center justify-center gap-8 md:gap-8 relative z-10">
                   {/* Left Column: Text & Socials */}
                   <div className="flex flex-col justify-center md:w-1/2 space-y-8">
 
-                    {/* Glass Container for Text */}
-                    <div className="glass-liquid rounded-2xl p-6 w-fit">
+                    {/* Text Container */}
+                    <div className="w-fit">
                       <div className="text-left">
                         <h1 className="text-5xl md:text-7xl font-bold font-mono mb-6 text-schematic-primary tracking-tighter">
                           Hello, I'm <br />
-                          <span className="text-gradient font-extrabold">Alex Mitelman</span>
+                          <span className="text-gradient font-extrabold pr-2">Alex Mitelman</span>
                         </h1>
-                        <p className="text-xl md:text-2xl text-schematic-secondary font-mono leading-relaxed border-l-4 border-schematic-accent pl-6">
-                          Software Engineer specializing in<br />
-                          Information and Computation Assurance<br />
-                          Graduated Dec 2025
-                        </p>
+                        <div className="flex items-stretch gap-6">
+                          <div className="w-2 rounded-full bg-gradient-void-vertical shrink-0 shadow-[0_0_12px_rgba(0,83,159,0.6)]" />
+                          <p className="text-xl md:text-2xl text-schematic-secondary font-mono leading-relaxed">
+                            Software Engineer specializing in<br />
+                            Information and Computation Assurance<br />
+                            Graduated Dec 2025
+                          </p>
+                        </div>
                       </div>
                     </div>
 
@@ -126,7 +124,7 @@ export default function Home() {
 
                   {/* Right Column: Image (Middle Right, Overlapping) */}
                   <div className="md:w-1/2 flex justify-center md:justify-end mt-12 md:mt-0 relative">
-                    <div className="glass-liquid rounded-2xl p-4 flex items-center justify-center">
+                    <div className="glass-base rounded-2xl p-4 flex items-center justify-center">
                       <div className="relative w-72 h-72 md:w-[500px] md:h-[500px] group">
                         <div className="relative w-full h-full p-2">
                           <img

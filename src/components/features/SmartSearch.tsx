@@ -43,7 +43,7 @@ export function SmartSearch({ externalFilter, onFilterChange }: SmartSearchProps
         <section id="smart-search" className="pt-8 pb-20 border-b border-schematic-grid">
             <div className="container mx-auto px-4">
                 <div className="max-w-6xl mx-auto">
-                    <div className="flex items-center space-x-2 mb-8 text-schematic-accent font-mono text-sm">
+                    <div className="flex items-center space-x-2 mb-8 text-[#00539F] font-mono text-sm">
                         <Terminal className="w-4 h-4" />
                         <span>RECENT_BUILDS</span>
                     </div>
@@ -58,9 +58,9 @@ export function SmartSearch({ externalFilter, onFilterChange }: SmartSearchProps
                                 <HolographicCard
                                     key={project.name}
                                     className={cn(
-                                        "glass-base rounded-lg p-6 hover:border-schematic-accent/50 transition-all duration-500 ease-out group cursor-pointer flex flex-col",
+                                        "glass-base rounded-lg p-6 hover:border-[#00539F]/50 transition-all duration-500 ease-out group cursor-pointer flex flex-col",
                                         isExpanded
-                                            ? cn("ring-1 ring-schematic-accent shadow-[0_0_30px_rgba(234,88,12,0.1)]", isZelda ? "md:col-span-2 md:row-span-2" : "md:col-span-3")
+                                            ? cn("ring-1 ring-[#00539F] shadow-[0_0_30px_rgba(0,83,159,0.1)]", isZelda ? "md:col-span-2 md:row-span-2" : "md:col-span-3")
                                             : "h-full"
                                     )}
                                     onClick={() => setSelectedProject(isExpanded ? null : project)}
@@ -69,14 +69,14 @@ export function SmartSearch({ externalFilter, onFilterChange }: SmartSearchProps
                                     <div className="flex flex-col justify-between mb-4 gap-4">
                                         <div className="w-full">
                                             <div className="flex justify-between items-start gap-4">
-                                                <h3 className="text-lg md:text-xl font-bold font-mono text-schematic-primary group-hover:text-schematic-accent transition-colors leading-tight whitespace-pre-line">
-                                                    <ChevronRight className={cn("inline-block w-5 h-5 text-schematic-accent mr-2 transition-transform duration-200", isExpanded && "rotate-90")} />
+                                                <h3 className="text-lg md:text-xl font-bold font-mono text-schematic-primary group-hover:text-[#00539F] transition-colors leading-tight whitespace-pre-line">
+                                                    <ChevronRight className={cn("inline-block w-5 h-5 text-[#00539F] mr-2 transition-transform duration-200", isExpanded && "rotate-90")} />
                                                     {project.name.toUpperCase()}
                                                 </h3>
                                             </div>
 
                                             <div className="text-sm text-schematic-secondary font-mono mt-2 ml-7 flex flex-wrap items-center gap-x-2 gap-y-1">
-                                                <span className="text-schematic-accent whitespace-nowrap">FINISHED: {project.date}</span>
+                                                <span className="text-[#00539F] whitespace-nowrap">FINISHED: {project.date}</span>
                                                 <span className="text-schematic-grid hidden md:inline">|</span>
                                                 <span className="break-words">{project.tech.slice(0, isExpanded ? undefined : 3).join(" + ")}
                                                     {!isExpanded && project.tech.length > 3 && ` +${project.tech.length - 3}`}
@@ -90,14 +90,14 @@ export function SmartSearch({ externalFilter, onFilterChange }: SmartSearchProps
                                                     href={project.link}
                                                     target="_blank"
                                                     rel="noopener noreferrer"
-                                                    className="inline-flex items-center text-xs font-bold text-schematic-bg bg-schematic-accent px-3 py-1 rounded hover:bg-schematic-accent/80 transition-all z-10 relative whitespace-nowrap"
+                                                    className="inline-flex items-center text-xs font-bold text-white bg-[#00539F] px-3 py-1 rounded hover:bg-[#00539F]/80 transition-all z-10 relative whitespace-nowrap"
                                                     onClick={(e) => e.stopPropagation()}
                                                 >
                                                     <ExternalLink className="w-3 h-3 mr-1" />
                                                     REPO
                                                 </a>
                                             )}
-                                            <span className="inline-block px-2 py-1 text-xs font-mono border border-schematic-accent/30 text-schematic-accent rounded bg-schematic-accent/5 whitespace-nowrap">
+                                            <span className="inline-block px-2 py-1 text-xs font-mono border border-[#00539F]/30 text-[#00539F] rounded bg-[#00539F]/5 whitespace-nowrap">
                                                 {project.date === "Pending" ? "IN_DEV" : "DEPLOYED"}
                                             </span>
                                         </div>
@@ -146,7 +146,7 @@ export function SmartSearch({ externalFilter, onFilterChange }: SmartSearchProps
                                                 </div>
                                             )}
 
-                                            <div className="pl-4 border-l-2 border-schematic-accent/30 space-y-2">
+                                            <div className="pl-4 border-l-2 border-[#00539F]/30 space-y-2">
                                                 {project.details.map((detail, i) => (
                                                     <p key={i} className="text-xs text-schematic-secondary/80 font-mono">
                                                         {">"} {detail}

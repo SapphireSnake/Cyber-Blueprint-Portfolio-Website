@@ -9,7 +9,7 @@ export function AboutSection() {
             <div className="glass-panel rounded-3xl p-6 md:p-8 relative z-10">
                 {/* Header */}
                 <div className="mb-8 md:mb-12">
-                    <h2 className="text-sm font-bold font-mono text-gradient tracking-widest uppercase mb-2">
+                    <h2 className="text-sm font-bold font-mono text-schematic-secondary tracking-widest uppercase mb-2">
                         ABOUT
                     </h2>
                     <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">

@@ -83,10 +83,10 @@ export function MqttStream() {
                     <div className="flex items-center space-x-2">
                         <button
                             onClick={(e) => { e.stopPropagation(); setIsConnected(!isConnected); }}
-                            className={cn("text-[10px] px-1 rounded border mr-2", isConnected ? "border-schematic-accent text-schematic-accent" : "border-red-500 text-red-500")}
+                            className={cn("text-[10px] px-1 rounded border mr-2", isConnected ? "border-gradient-void" : "border-red-500 text-red-500")}
                             title={isConnected ? "DISCONNECT STREAM" : "CONNECT STREAM"}
                         >
-                            {isConnected ? "CNCT" : "OFF"}
+                            {isConnected ? <span className="text-gradient-void">CNCT</span> : "OFF"}
                         </button>
 
                         <button
