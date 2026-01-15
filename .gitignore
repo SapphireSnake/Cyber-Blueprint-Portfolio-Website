@@ -41,4 +41,5 @@ yarn-error.log*
 next-env.d.ts
 
 # documentation
-/docs/
+/docs/*
+!/docs/ARCHITECTURE.md
