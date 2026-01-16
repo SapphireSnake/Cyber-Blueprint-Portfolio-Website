@@ -1,7 +1,6 @@
-"use client";
-
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { cn } from "@/lib/utils";
 
 const CLIENT_LOGS = [
     "INIT_UPLINK_SEQUENCE...",
@@ -59,19 +58,27 @@ export function ProtocolHandshake({ onComplete }: { onComplete: () => void }) {
                     transition={{ duration: 0.5 }}
                 >
                     <div className="w-full max-w-4xl grid grid-cols-2 gap-8 p-8">
-                        {/* Client Column */}
-                        <div className="border-r border-schematic-grid pr-8 text-right">
-                            <div className="mb-4 text-schematic-secondary border-b border-schematic-grid pb-2">CLIENT_UPLINK</div>
+                        {/* Client Column (Blue -> Purple) */}
+                        <div className="border-r border-white/10 pr-8 text-right">
+                            <div className="mb-4 text-white/40 border-b border-white/10 pb-2">CLIENT_UPLINK</div>
                             {clientLines.map((line, i) => (
-                                <div key={i} className="text-schematic-accent mb-1">{line}</div>
+                                <div key={i} className="mb-1">
+                                    <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#0095DD] to-[#6B4C9A] font-bold">
+                                        {line}
+                                    </span>
+                                </div>
                             ))}
                         </div>
 
-                        {/* Server Column */}
+                        {/* Server Column (Yellow -> Red) */}
                         <div className="pl-8">
-                            <div className="mb-4 text-schematic-secondary border-b border-schematic-grid pb-2">SERVER_DOWNLINK</div>
+                            <div className="mb-4 text-white/40 border-b border-white/10 pb-2">SERVER_DOWNLINK</div>
                             {serverLines.map((line, i) => (
-                                <div key={i} className="text-blue-400 mb-1">{line}</div>
+                                <div key={i} className="mb-1">
+                                    <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#FFD700] to-[#FF0055] font-bold">
+                                        {line}
+                                    </span>
+                                </div>
                             ))}
                         </div>
                     </div>

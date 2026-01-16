@@ -2,20 +2,16 @@
 
 import { useState, useEffect } from "react";
 import { SystemHeader } from "@/components/layout/SystemHeader";
-import { SkillMatrix } from "@/components/features/SkillMatrix";
 import { SmartSearch } from "@/components/features/SmartSearch";
 import { GridBackground } from "@/components/visuals/GridBackground";
 import { MqttStream } from "@/components/visuals/MqttStream";
 import { ProtocolHandshake } from "@/components/system/ProtocolHandshake";
-import { DigitalTwin } from "@/components/visuals/DigitalTwin";
 import { SystemFooter } from "@/components/layout/SystemFooter";
-import { TerminalCLI } from "@/components/system/TerminalCLI";
 import { DataUplink } from "@/components/features/DataUplink";
 import { GameOverlay } from "@/components/ui/GameOverlay";
-import { SystemModal } from "@/components/ui/SystemModal";
 import { ExperienceLog } from "@/components/features/ExperienceLog";
 import { EducationLog } from "@/components/features/EducationLog";
-import { Mail, Github, Linkedin, FileText, Activity, Box, ChevronRight } from "lucide-react";
+import { Mail, Github, Linkedin, FileText } from "lucide-react";
 
 import { BootSequence } from "@/components/system/BootSequence";
 import { TechStack } from "@/components/features/TechStack";
@@ -34,10 +30,15 @@ export default function Home() {
     window.addEventListener("restart-intro", handleRestart);
     return () => window.removeEventListener("restart-intro", handleRestart);
   }, []);
-  const [showTelemetry, setShowTelemetry] = useState(false);
-  const [showDigitalTwin, setShowDigitalTwin] = useState(false);
   const [projectFilter, setProjectFilter] = useState<string | null>(null);
   const [glowRadius, setGlowRadius] = useState(100);
+
+  // Track Filter Changes
+  useEffect(() => {
+    if (projectFilter) {
+      window.dispatchEvent(new CustomEvent("filter-changed", { detail: projectFilter }));
+    }
+  }, [projectFilter]);
 
   // 1. Run Handshake (Loading)
   if (!isLoaded) {
@@ -57,11 +58,11 @@ export default function Home() {
         <div className="animate-in fade-in duration-1000">
           <GridBackground radius={glowRadius} />
           <SystemHeader />
-          <MqttStream />
+          <MqttStream side="left" />
 
           <div className="container mx-auto px-4 pt-32 pb-20">
             {/* Central Hub Hero */}
-            <section className="min-h-[80vh] flex flex-col justify-center relative mb-6">
+            <section id="hero" className="min-h-[80vh] flex flex-col justify-center relative mb-6">
               <div className="glass-panel p-8 md:p-12 rounded-2xl max-w-6xl mx-auto w-full relative">
 
                 <div className="flex flex-col md:flex-row items-center justify-center gap-8 md:gap-8 relative z-10">
@@ -104,9 +105,13 @@ export default function Home() {
                         <span className="font-mono text-sm font-bold">RESUME</span>
                       </a>
                       <a
-                        href="https://github.com/sapphiresnake"
-                        target="_blank"
-                        className="glass-panel flex items-center space-x-3 p-3 rounded hover:text-schematic-accent hover:border-schematic-accent hover:bg-schematic-accent/10 transition-all group"
+                        href="#smart-search"
+                        onClick={(e) => {
+                          e.preventDefault();
+                          setProjectFilter("GITHUB_REPO");
+                          document.getElementById("smart-search")?.scrollIntoView({ behavior: "smooth" });
+                        }}
+                        className="glass-panel flex items-center space-x-3 p-3 rounded hover:text-schematic-accent hover:border-schematic-accent hover:bg-schematic-accent/10 transition-all group cursor-pointer"
                       >
                         <Github className="w-5 h-5" />
                         <span className="font-mono text-sm font-bold">GITHUB</span>
@@ -167,68 +172,11 @@ export default function Home() {
             <SectionReveal>
               <DataUplink />
             </SectionReveal>
-
-            {/* System Modules (Bottom) */}
-            <div className="mt-20 grid grid-cols-1 md:grid-cols-2 gap-6 w-full max-w-4xl mx-auto mb-20">
-              <button
-                onClick={() => setShowTelemetry(true)}
-                className="flex items-center justify-between p-6 glass-panel rounded-lg hover:border-schematic-accent hover:bg-schematic-accent/5 transition-all group text-left"
-              >
-                <div className="flex items-center space-x-6">
-                  <div className="p-3 bg-schematic-accent/10 rounded-lg text-schematic-accent">
-                    <Activity className="w-8 h-8" />
-                  </div>
-                  <div>
-                    <h3 className="text-xl font-bold font-mono text-schematic-primary group-hover:text-schematic-accent transition-colors">SYSTEM_TELEMETRY</h3>
-                    <p className="text-sm text-schematic-secondary font-mono mt-1">View Live Skill Matrix & Status</p>
-                  </div>
-                </div>
-                <ChevronRight className="w-6 h-6 text-schematic-grid group-hover:text-schematic-accent transition-colors" />
-              </button>
-
-              <button
-                onClick={() => setShowDigitalTwin(true)}
-                className="flex items-center justify-between p-6 glass-panel rounded-lg hover:border-schematic-accent hover:bg-schematic-accent/5 transition-all group text-left"
-              >
-                <div className="flex items-center space-x-6">
-                  <div className="p-3 bg-schematic-accent/10 rounded-lg text-schematic-accent">
-                    <Box className="w-8 h-8" />
-                  </div>
-                  <div>
-                    <h3 className="text-xl font-bold font-mono text-schematic-primary group-hover:text-schematic-accent transition-colors">DIGITAL_TWIN</h3>
-                    <p className="text-sm text-schematic-secondary font-mono mt-1">Interactive 3D System Model</p>
-                  </div>
-                </div>
-                <ChevronRight className="w-6 h-6 text-schematic-grid group-hover:text-schematic-accent transition-colors" />
-              </button>
-            </div>
           </div>
 
           <SystemFooter radius={glowRadius} setRadius={setGlowRadius} />
-          <TerminalCLI />
+          <MqttStream side="right" />
           <GameOverlay />
-
-          {/* Modals */}
-          <SystemModal
-            isOpen={showTelemetry}
-            onClose={() => setShowTelemetry(false)}
-            title="LIVE_SYSTEM_TELEMETRY"
-          >
-            <SkillMatrix />
-          </SystemModal>
-
-          <SystemModal
-            isOpen={showDigitalTwin}
-            onClose={() => setShowDigitalTwin(false)}
-            title="DIGITAL_TWIN_VISUALIZATION"
-          >
-            <div className="h-[60vh] w-full border border-schematic-grid/50 rounded-lg overflow-hidden relative bg-black/20">
-              <DigitalTwin />
-            </div>
-            <p className="mt-4 text-sm text-schematic-secondary font-mono text-center">
-              Interactive 3D representation of the system architecture. Drag to rotate, scroll to zoom.
-            </p>
-          </SystemModal>
         </div>
       )}
     </main>

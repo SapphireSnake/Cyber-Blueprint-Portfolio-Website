@@ -69,19 +69,11 @@ export function AboutSection() {
 
                             {/* Skills Pills */}
                             <div className="flex flex-wrap gap-2">
-                                {["Full-stack", "IoT", "Cloud", "Security", "Embedded"].map((skill) => (
-                                    <span key={skill} className="px-3 py-1 rounded-full bg-schematic-accent/10 text-schematic-accent text-xs font-bold font-mono border border-schematic-accent/20">
+                                {["Systems Architecture", "Full-Stack Engineering", "Embedded Security", "Cloud Infrastructure", "IoT Solutions"].map((skill) => (
+                                    <span key={skill} className="px-2.5 py-1 rounded-full bg-schematic-accent/10 text-schematic-accent text-[11px] font-bold font-mono border border-schematic-accent/20 whitespace-nowrap">
                                         {skill}
                                     </span>
                                 ))}
-                            </div>
-
-                            {/* CTA Box */}
-                            <div className="bg-schematic-accent/5 border border-schematic-accent/20 rounded-xl p-4 flex items-start space-x-3">
-                                <Mail className="w-5 h-5 text-schematic-accent flex-shrink-0 mt-0.5" />
-                                <p className="text-sm text-schematic-secondary font-mono">
-                                    Reach out if you want to build something impactful together.
-                                </p>
                             </div>
                         </div>
                     </div>

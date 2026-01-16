@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef } from "react";
 import { motion } from "framer-motion";
+import { cn } from "@/lib/utils";
 
 const LOG_MESSAGES = [
     "INITIALIZING_SYSTEM_CORE...",
@@ -21,7 +22,7 @@ const LOG_MESSAGES = [
     "SYNCING_WITH_VIRTUAL_DOM...",
 ];
 
-export function SystemLog() {
+export function SystemLog({ side = "left" }: { side?: "left" | "right" }) {
     const [logs, setLogs] = useState<string[]>(() => LOG_MESSAGES.slice(0, 5));
     const scrollRef = useRef<HTMLDivElement>(null);
 
@@ -49,7 +50,10 @@ export function SystemLog() {
     }, [logs]);
 
     return (
-        <div className="fixed bottom-4 left-4 z-40 hidden lg:block w-64 font-mono text-[10px] text-schematic-secondary opacity-50 hover:opacity-100 transition-opacity pointer-events-none">
+        <div className={cn(
+            "fixed bottom-4 z-40 hidden lg:block w-64 font-mono text-[10px] text-schematic-secondary opacity-50 hover:opacity-100 transition-opacity pointer-events-none",
+            side === "right" ? "right-4" : "left-4"
+        )}>
             <div className="border border-schematic-grid bg-schematic-bg/90 p-2 rounded h-32 overflow-hidden flex flex-col">
                 <div className="border-b border-schematic-grid mb-1 pb-1 flex justify-between">
                     <span>SYSTEM_LOG</span>

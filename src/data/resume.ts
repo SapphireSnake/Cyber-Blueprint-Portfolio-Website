@@ -21,7 +21,7 @@ export const RESUME = {
             school: "New Albany High School",
             degree: "High School Diploma",
 
-            gpa: "4.0/4.0",
+            gpa: "4.0/4.0 Weighted",
             honors: "Summa Cum Laude",
             graduation: "May 2022",
             logo: "/logos/na.jpg",
@@ -46,7 +46,7 @@ export const RESUME = {
             logo: "/logos/osu.png?v=2",
             stack: ["Security", "AI", "OS", "Network"],
             achievements: [
-                "Relevant Coursework: Software Security, Network Security, Operating Systems, Artificial Intelligence.",
+                "Relevant Coursework: Information Security Projects, Information Security, Network Security, Operating Systems, Code Breaking, Knowledge Systems Capstone.",
             ],
         },
         {
@@ -64,9 +64,9 @@ export const RESUME = {
         {
             name: "CMM-Sense IoT Device",
             description: "Real-time acceleration and humiture data broadcast.",
-            tech: ["IoT", "Three.js", "React", "WebGL"],
+            tech: ["C++", "Python", "C#", "ESP32", "CircuitPython"],
             link: "https://github.com/alexmitelman/cmm-sense",
-            date: "2024",
+            date: "Oct 2025",
             details: [
                 "Digital Twin of the industrial sensor node",
                 "Hardware abstraction layer"
@@ -77,6 +77,7 @@ export const RESUME = {
             tech: ["Next.js", "Flask", "LangChain", "Elasticsearch", "OpenAI"],
             date: "Dec 2025",
             link: "https://github.com/SapphireSnake/Repo.Rover",
+            video: "/tell-me-about-repo-rover.mov",
             description: "AI assistant RAG pipeline to provide code explanations and security insights without local cloning.",
             details: [
                 "Built an AI assistant RAG pipeline to provide code explanations and security insights without local cloning for public Github repos.",
@@ -85,13 +86,16 @@ export const RESUME = {
             ],
         },
         {
-            name: "React Smart Lock",
-            tech: ["React", "Node.js", "WebSockets", "C++", "Arduino"],
-            date: "May 2025",
-            description: "IoT smart lock with real-time web interface and hardware actuation.",
+            name: "BigBooks DB Explorer",
+            tech: ["React", "Next.js", "SQLite", "AI"],
+            date: "Jan 2025",
+            description: "Database visualizer for SQL/SQLite files with AI-powered query generation.",
+            link: "https://github.com/SapphireSnake/BIGBooks-DB-Explorer",
+            video: "/BigBooks-Explorer-Video-demo.mov?v=3",
             details: [
-                "Developed the front-end interface in React, which communicated lock/unlock commands to a Node.js server using WebSockets for live, low latency interaction.",
-                "Programmed an Arduino microcontroller in C++ to receive commands to actuate the solenoid locking mechanism.",
+                "Developed a web-based database explorer allowing users to upload and visualize SQLite databases.",
+                "Integrated AI-driven query generation to assist users in writing complex SQL queries.",
+                "Implemented a responsive UI for executing queries and viewing results in real-time.",
             ],
         },
         {
@@ -107,39 +111,58 @@ export const RESUME = {
             ],
         },
         {
-            name: "CLASSIFIED_PROJECT_ALPHA",
-            tech: ["Redacted"],
-            date: "Est. 2026",
-            description: "Advanced neural interface prototype. Access restricted.",
-            details: ["Clearance Level 5 Required"],
+            name: "Portfolio Website",
+            tech: ["Next.js", "React", "Tailwind CSS", "TypeScript", "Framer Motion"],
+            date: "Jan 2026",
+            description: "Interactive resume website featuring glassmorphism and dynamic theming.",
+            link: "https://github.com/SapphireSnake/Firefox-Inspired-Portfolio-Website",
+            details: [
+                "Designed and built a modern, interactive portfolio using Next.js and Tailwind CSS.",
+                "Implemented advanced UI effects including glassmorphism, holographic cards, and 3D digital twins.",
+                "Optimized for performance and responsiveness across all devices.",
+            ],
+        },
+
+        {
+            name: "Hybrid Language Interpreter",
+            tech: ["Java", "JFlex", "CUP", "Make"],
+            date: "Dec 2024",
+            image: "/quandary_demo_screenshot_1768519349370.png",
+            description: "Interpreter for a custom language combining functional and imperative paradigms.",
+            details: [
+                "Implemented a complete interpreter including lexer (JFlex), parser (CUP), and AST evaluation engine in Java.",
+                "Engineered features for static type checking, scope analysis, and concurrent execution with thread synchronization.",
+                "Built a custom memory manager supporting explicit allocation and Mark-Sweep garbage collection.",
+            ],
         },
         {
-            name: "SYSTEM_OPTIMIZER_V2",
-            tech: ["Rust", "WASM"],
+            name: "React Smart Lock",
+            tech: ["React", "Node.js", "WebSockets", "C++", "Arduino"],
+            date: "May 2025",
+            description: "IoT smart lock with real-time web interface and hardware actuation.",
+            details: [
+                "Developed the front-end interface in React, which communicated lock/unlock commands to a Node.js server using WebSockets for live, low latency interaction.",
+                "Programmed an Arduino microcontroller in C++ to receive commands to actuate the solenoid locking mechanism.",
+            ],
+        },
+        {
+            name: "Autonomous Drone Flight Controller",
+            tech: ["MATLAB", "Simulink", "Python", "C++"],
             date: "Pending",
-            description: "High-performance system resource allocator.",
+            description: "PID control system simulation for quadcopter stability, validated with real-time telemetry analysis.",
             details: ["In Development"],
         },
         {
-            name: "NETWORK_SENTINEL",
-            tech: ["Go", "eBPF"],
-            date: "Pending",
-            description: "Real-time packet inspection and anomaly detection.",
-            details: ["In Development"],
-        },
-        {
-            name: "QUANTUM_SIM",
-            tech: ["Python", "Qiskit"],
-            date: "Pending",
-            description: "Quantum circuit simulator for educational purposes.",
-            details: ["In Development"],
-        },
-        {
-            name: "DATA_VAULT",
-            tech: ["Solidity", "IPFS"],
-            date: "Pending",
-            description: "Decentralized encrypted storage solution.",
-            details: ["In Development"],
+            name: "IoT Security & Anomaly Detection",
+            tech: ["C#", "OWIN", "SQLite", "WPF", "REST API"],
+            date: "Nov 2025",
+            description: "IoT security framework featuring self-hosted OWIN APIs, SQL injection honeypots, and real-time anomaly detection.",
+            images: ["/iot-anomaly-1.png", "/iot-anomaly-2.png"],
+            details: [
+                "Engineered a self-hosted OWIN web server within a WPF application to expose RESTful API endpoints for sensor data.",
+                "Implemented a dual-endpoint architecture: a vulnerable baseline for SQL injection testing and a hardened secure endpoint with whitelisting.",
+                "Developed an anomaly detection engine using SQLite to identify and log irregular sensor patterns (e.g., spoofing attempts).",
+            ],
         },
     ],
     skills: {

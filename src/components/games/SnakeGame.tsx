@@ -1,9 +1,29 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { motion } from "framer-motion";
 import { X, RefreshCw } from "lucide-react";
 import { GRID_SIZE, SPEED, DOT_SIZE, spawnFood, Point } from "@/lib/gameUtils";
+
+// Helper for color interpolation
+function interpolateColor(color1: string, color2: string, factor: number) {
+    if (factor > 1) factor = 1;
+    if (factor < 0) factor = 0;
+
+    const r1 = parseInt(color1.substring(1, 3), 16);
+    const g1 = parseInt(color1.substring(3, 5), 16);
+    const b1 = parseInt(color1.substring(5, 7), 16);
+
+    const r2 = parseInt(color2.substring(1, 3), 16);
+    const g2 = parseInt(color2.substring(3, 5), 16);
+    const b2 = parseInt(color2.substring(5, 7), 16);
+
+    const r = Math.round(r1 + factor * (r2 - r1));
+    const g = Math.round(g1 + factor * (g2 - g1));
+    const b = Math.round(b1 + factor * (b2 - b1));
+
+    return `rgb(${r}, ${g}, ${b})`;
+}
 
 export function SnakeGame({ onExit }: { onExit: () => void }) {
     const [snake, setSnake] = useState<Point[]>([{ x: 10, y: 10 }]);
@@ -15,6 +35,18 @@ export function SnakeGame({ onExit }: { onExit: () => void }) {
     const [gridColor, setGridColor] = useState("#00ff9d");
     const [dimensions, setDimensions] = useState({ cols: 0, rows: 0 });
     const [invertControls, setInvertControls] = useState(false);
+    const gameOverRef = useRef(false);
+
+    const triggerGameOver = () => {
+        if (gameOverRef.current) return;
+        gameOverRef.current = true;
+        setGameOver(true);
+        // Defer dispatch to avoid "Cannot update component while rendering another" error
+        // because this is often called from within a state updater (setSnake)
+        setTimeout(() => {
+            window.dispatchEvent(new CustomEvent("game-over", { detail: { game: "PYTHON_SNAKE", score } }));
+        }, 0);
+    };
 
     // Initialize Game & Dimensions
     useEffect(() => {
@@ -27,6 +59,9 @@ export function SnakeGame({ onExit }: { onExit: () => void }) {
         // Initial setup
         handleResize();
         window.addEventListener("resize", handleResize);
+
+        // Dispatch Game Start
+        window.dispatchEvent(new CustomEvent("game-started", { detail: "PYTHON_SNAKE" }));
 
         return () => window.removeEventListener("resize", handleResize);
     }, []);
@@ -46,7 +81,7 @@ export function SnakeGame({ onExit }: { onExit: () => void }) {
     useEffect(() => {
         const updateColor = () => {
             const isBlueprint = document.body.classList.contains("blueprint-mode");
-            setGridColor(isBlueprint ? "#ffffff" : "#00ff9d");
+            setGridColor(isBlueprint ? "#ffffff" : "#00539F");
         };
         updateColor();
         const observer = new MutationObserver((mutations) => {
@@ -105,9 +140,9 @@ export function SnakeGame({ onExit }: { onExit: () => void }) {
                 const mirrorHead = { x: cols - 1 - newHeadX, y: rows - 1 - newHeadY };
 
                 // Check collisions
-                // 1. Self collision
-                if (prev.some(segment => segment.x === newHead.x && segment.y === newHead.y)) {
-                    setGameOver(true);
+                // 1. Self collision (Ignore index 1 - Neck Immunity)
+                if (prev.some((segment, index) => index !== 1 && segment.x === newHead.x && segment.y === newHead.y)) {
+                    triggerGameOver();
                     return prev;
                 }
 
@@ -118,18 +153,19 @@ export function SnakeGame({ onExit }: { onExit: () => void }) {
                 }));
 
                 if (mirrorSnakeSegments.some(seg => seg.x === newHead.x && seg.y === newHead.y)) {
-                    setGameOver(true);
+                    triggerGameOver();
                     return prev;
                 }
 
                 if (mirrorHead.x === newHead.x && mirrorHead.y === newHead.y) {
-                    setGameOver(true);
+                    triggerGameOver();
                     return prev;
                 }
 
                 const newSnake = [newHead, ...prev];
                 let currentFoodList = [...food];
                 let foodChanged = false;
+                let grew = false;
 
                 // 1. Check Mirror Snake Food Collision (Stealing)
                 const mirrorFoodIndex = currentFoodList.findIndex(f => f.x === mirrorHead.x && f.y === mirrorHead.y);
@@ -140,6 +176,7 @@ export function SnakeGame({ onExit }: { onExit: () => void }) {
                     // Spawn replacement
                     currentFoodList.push(spawnFood(newSnake, currentFoodList, cols, rows));
                     foodChanged = true;
+                    grew = true;
                 }
 
                 // 2. Check Player Food Collision
@@ -161,8 +198,11 @@ export function SnakeGame({ onExit }: { onExit: () => void }) {
                     }
 
                     foodChanged = true;
-                } else {
-                    // Only pop if player didn't eat
+                    grew = true;
+                }
+
+                if (!grew) {
+                    // Only pop if NO ONE ate
                     newSnake.pop();
                 }
 
@@ -182,8 +222,10 @@ export function SnakeGame({ onExit }: { onExit: () => void }) {
         setFood([]); // Will trigger the useEffect to spawn new food
         setDirection({ x: 1, y: 0 });
         setGameOver(false);
+        gameOverRef.current = false;
         setScore(0);
         setIsPaused(false);
+        window.dispatchEvent(new CustomEvent("game-started", { detail: "PYTHON_SNAKE" }));
     };
 
     if (dimensions.cols === 0) return null; // Wait for dimensions
@@ -218,6 +260,9 @@ export function SnakeGame({ onExit }: { onExit: () => void }) {
             {/* Player Snake */}
             {snake.map((segment, i) => {
                 const isHead = i === 0;
+                // Blue (#00539F) to Purple (#8A2BE2)
+                const color = interpolateColor("#00539F", "#8A2BE2", i / (snake.length + 5));
+
                 return (
                     <motion.div
                         key={`player-${segment.x}-${segment.y}-${i}`}
@@ -227,9 +272,9 @@ export function SnakeGame({ onExit }: { onExit: () => void }) {
                             top: segment.y * GRID_SIZE - DOT_SIZE / 2,
                             width: DOT_SIZE,
                             height: DOT_SIZE,
-                            backgroundColor: gridColor,
-                            boxShadow: isHead ? `0 0 20px ${gridColor}` : 'none',
-                            opacity: Math.max(0.2, 1 - i / (snake.length + 5)),
+                            backgroundColor: color,
+                            boxShadow: isHead ? `0 0 20px ${color}` : 'none',
+                            opacity: Math.max(0.4, 1 - i / (snake.length + 10)),
                             zIndex: 10
                         }}
                         initial={false}
@@ -237,11 +282,13 @@ export function SnakeGame({ onExit }: { onExit: () => void }) {
                 );
             })}
 
-            {/* Mirror Snake (Red) */}
+            {/* Mirror Snake */}
             {snake.map((segment, i) => {
                 const isHead = i === 0;
                 const mirrorX = dimensions.cols - 1 - segment.x;
                 const mirrorY = dimensions.rows - 1 - segment.y;
+                // Yellow (#FFD700) to Red (#FF0055)
+                const color = interpolateColor("#FFD700", "#FF0055", i / (snake.length + 5));
 
                 return (
                     <motion.div
@@ -252,9 +299,9 @@ export function SnakeGame({ onExit }: { onExit: () => void }) {
                             top: mirrorY * GRID_SIZE - DOT_SIZE / 2,
                             width: DOT_SIZE,
                             height: DOT_SIZE,
-                            backgroundColor: "#ff0055", // Error Red
-                            boxShadow: isHead ? `0 0 20px #ff0055` : 'none',
-                            opacity: Math.max(0.2, 1 - i / (snake.length + 5)),
+                            backgroundColor: color,
+                            boxShadow: isHead ? `0 0 20px ${color}` : 'none',
+                            opacity: Math.max(0.4, 1 - i / (snake.length + 10)),
                             zIndex: 10
                         }}
                         initial={false}
@@ -275,8 +322,8 @@ export function SnakeGame({ onExit }: { onExit: () => void }) {
                     }}
                 >
                     <div
-                        className="w-full h-full rounded-full animate-pulse shadow-[0_0_15px_white]"
-                        style={{ backgroundColor: 'white' }}
+                        className="w-full h-full rounded-full animate-pulse shadow-[0_0_15px_rgba(0,0,0,0.5)]"
+                        style={{ backgroundColor: '#000000' }}
                     />
                 </div>
             ))}

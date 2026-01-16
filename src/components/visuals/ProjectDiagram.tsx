@@ -65,7 +65,7 @@ export function ProjectDiagram({ project }: ProjectDiagramProps) {
                     </div>
                     <div className="flex flex-col items-center">
                         <div className="w-16 h-10 border border-schematic-secondary/50 rounded flex items-center justify-center">
-                            NODE_SRV
+                            MICRO_CTRL
                         </div>
                     </div>
                     <div className="h-px flex-1 bg-schematic-grid mx-2 relative">
@@ -77,7 +77,7 @@ export function ProjectDiagram({ project }: ProjectDiagramProps) {
                     </div>
                     <div className="flex flex-col items-center">
                         <div className="w-16 h-10 border border-schematic-primary/50 rounded flex items-center justify-center">
-                            ARDUINO
+                            SOLENOID
                         </div>
                     </div>
                 </div>

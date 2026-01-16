@@ -63,9 +63,6 @@ function SpeedLines({ isFalling }: { isFalling: boolean }) {
 
     useFrame((state, delta) => {
         if (!linesRef.current || !isFalling) return;
-        // Animate lines moving up rapidly to simulate falling down
-        // ... (Simple implementation for now, or just skip if complex)
-        // Actually, let's just use a simple particle system that only appears when falling
     });
 
     if (!isFalling) return null;
@@ -90,7 +87,7 @@ function BackgroundTunnel() {
     return (
         <mesh rotation={[Math.PI / 2, 0, 0]}>
             <cylinderGeometry args={[TUNNEL_RADIUS + 2, TUNNEL_RADIUS + 2, VIEW_DISTANCE * SEGMENT_LENGTH, 32, 64, true]} />
-            <meshBasicMaterial color="#00ff9d" wireframe={true} transparent opacity={0.05} side={THREE.DoubleSide} />
+            <meshBasicMaterial color="#00539F" wireframe={true} transparent opacity={0.05} side={THREE.DoubleSide} />
         </mesh>
     );
 }
@@ -212,8 +209,12 @@ function Player({
     return (
         <mesh ref={meshRef} position={[0, -TUNNEL_RADIUS + 0.5, 2]}>
             <boxGeometry args={[0.5, 0.5, 0.5]} />
-            <meshBasicMaterial color="#00ff9d" />
-            <pointLight intensity={2} distance={10} color="#00ff9d" />
+            <meshBasicMaterial color="#ffffff" />
+            <lineSegments>
+                <edgesGeometry args={[new THREE.BoxGeometry(0.5, 0.5, 0.5)]} />
+                <meshBasicMaterial color="#000000" />
+            </lineSegments>
+            <pointLight intensity={2} distance={10} color="#ffffff" />
         </mesh>
     );
 }
@@ -326,15 +327,8 @@ function Tunnel({
 
         rings.current.forEach((ring, ringIdx) => {
             // Calculate Z position based on ring index and local offset
-            // Ring 0 is closest, Ring N is furthest
-            // We want them to move towards +Z (if camera is looking -Z? No, camera is at +5 looking -Z)
-            // Wait, previous logic: actualZ = -((ringIdx * SEGMENT_LENGTH)) + (offsetZ.current % SEGMENT_LENGTH);
-            // If offsetZ increases, actualZ increases (moves towards camera at 0 or +Z)
-
-            // New logic: 
             // Ring 0 is at 0 + localOffset
             // Ring 1 is at -SEGMENT_LENGTH + localOffset
-            // etc.
 
             const actualZ = -(ringIdx * SEGMENT_LENGTH) + localOffset.current;
 
@@ -368,7 +362,7 @@ function Tunnel({
             <Stars />
             <instancedMesh ref={meshRef} args={[undefined, undefined, VIEW_DISTANCE * SEGMENTS]}>
                 <boxGeometry args={[1, 1, 1]} />
-                <meshBasicMaterial color="#00ff9d" wireframe={false} transparent opacity={0.8} side={THREE.DoubleSide} />
+                <meshBasicMaterial color="#00539F" wireframe={false} transparent opacity={0.8} side={THREE.DoubleSide} />
                 <lineSegments>
                     <edgesGeometry args={[new THREE.BoxGeometry(1, 1, 1)]} />
                     <meshBasicMaterial color="#ffffff" transparent opacity={0.5} />
@@ -460,12 +454,21 @@ export function SpaceRun({ onExit }: { onExit: () => void }) {
     const [hasStarted, setHasStarted] = useState(false);
     const restartCooldown = useRef(false);
 
+    const gameOverRef = useRef(false);
+
     useEffect(() => {
         if (gameActive && !gameOver && hasStarted) {
             const interval = setInterval(() => setScore(s => s + 1), 100);
             return () => clearInterval(interval);
         }
     }, [gameActive, gameOver, hasStarted]);
+
+    useEffect(() => {
+        if (gameOver && !gameOverRef.current) {
+            gameOverRef.current = true;
+            window.dispatchEvent(new CustomEvent("game-over", { detail: { game: "SPACE_RUN", score } }));
+        }
+    }, [gameOver, score]);
 
     const handleRestart = () => {
         setGameOver(false);
@@ -476,6 +479,8 @@ export function SpaceRun({ onExit }: { onExit: () => void }) {
         playerYRef.current = -TUNNEL_RADIUS + 0.5;
         isOverHole.current = false;
         setHasStarted(false); // Reset start state
+        gameOverRef.current = false;
+        window.dispatchEvent(new CustomEvent("game-started", { detail: "SPACE_RUN" }));
 
         // Prevent immediate start
         restartCooldown.current = true;
@@ -496,6 +501,7 @@ export function SpaceRun({ onExit }: { onExit: () => void }) {
 
             if (!hasStarted) {
                 setHasStarted(true);
+                window.dispatchEvent(new CustomEvent("game-started", { detail: "SPACE_RUN" }));
                 return;
             }
 

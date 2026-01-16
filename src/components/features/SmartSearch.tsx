@@ -27,6 +27,10 @@ export function SmartSearch({ externalFilter, onFilterChange }: SmartSearchProps
     }, [externalFilter]);
 
     const filteredProjects = RESUME.projects.filter((project) => {
+        if (activeFilter === "GITHUB_REPO" || activeFilter === "GitHub") {
+            return !!project.link;
+        }
+
         const matchesQuery = project.name.toLowerCase().includes(query.toLowerCase()) ||
             project.description.toLowerCase().includes(query.toLowerCase()) ||
             project.tech.some(t => t.toLowerCase().includes(query.toLowerCase()));
@@ -51,8 +55,8 @@ export function SmartSearch({ externalFilter, onFilterChange }: SmartSearchProps
                     {/* Results Grid */}
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-6 auto-rows-min">
                         {filteredProjects.map((project) => {
-                            const isExpanded = selectedProject?.name === project.name;
-                            const isZelda = project.name.includes("The Legend of Zelda");
+                            const isExpanded = selectedProject?.name === project.name || activeFilter === "GITHUB_REPO";
+                            const isLargeCard = project.name.includes("The Legend of Zelda") || project.name.includes("Repo Rover") || project.name.includes("Hybrid Language Interpreter") || project.name.includes("BigBooks DB Explorer") || project.name.includes("IoT Security");
 
                             return (
                                 <HolographicCard
@@ -60,10 +64,15 @@ export function SmartSearch({ externalFilter, onFilterChange }: SmartSearchProps
                                     className={cn(
                                         "glass-base rounded-lg p-6 hover:border-[#00539F]/50 transition-all duration-500 ease-out group cursor-pointer flex flex-col",
                                         isExpanded
-                                            ? cn("ring-1 ring-[#00539F] shadow-[0_0_30px_rgba(0,83,159,0.1)]", isZelda ? "md:col-span-2 md:row-span-2" : "md:col-span-3")
+                                            ? cn("ring-1 ring-[#00539F] shadow-[0_0_30px_rgba(0,83,159,0.1)]", isLargeCard ? "md:col-span-2 md:row-span-2" : "md:col-span-3")
                                             : "h-full"
                                     )}
-                                    onClick={() => setSelectedProject(isExpanded ? null : project)}
+                                    onClick={() => {
+                                        if (!isExpanded) {
+                                            window.dispatchEvent(new CustomEvent("project-expanded", { detail: project.name }));
+                                        }
+                                        setSelectedProject(isExpanded ? null : project);
+                                    }}
                                 >
                                     {/* Card Header */}
                                     <div className="flex flex-col justify-between mb-4 gap-4">
@@ -78,8 +87,9 @@ export function SmartSearch({ externalFilter, onFilterChange }: SmartSearchProps
                                             <div className="text-sm text-schematic-secondary font-mono mt-2 ml-7 flex flex-wrap items-center gap-x-2 gap-y-1">
                                                 <span className="text-[#00539F] whitespace-nowrap">FINISHED: {project.date}</span>
                                                 <span className="text-schematic-grid hidden md:inline">|</span>
-                                                <span className="break-words">{project.tech.slice(0, isExpanded ? undefined : 3).join(" + ")}
-                                                    {!isExpanded && project.tech.length > 3 && ` +${project.tech.length - 3}`}
+                                                <span className="break-words">
+                                                    {project.tech.slice(0, isExpanded ? undefined : 3).join(project.tech.length > 2 ? ", " : " + ")}
+                                                    {!isExpanded && project.tech.length > 3 && `, +${project.tech.length - 3}`}
                                                 </span>
                                             </div>
                                         </div>
@@ -130,14 +140,40 @@ export function SmartSearch({ externalFilter, onFilterChange }: SmartSearchProps
                                                     </div>
                                                 </div>
                                             ) : project.video ? (
-                                                <div className="mb-6 border border-schematic-grid/50 rounded-lg overflow-hidden bg-black/20 max-w-lg w-full">
+                                                <div className={cn(
+                                                    "mb-6 border border-schematic-grid/50 rounded-lg overflow-hidden bg-black/20 w-full",
+                                                    project.name.includes("Repo Rover") || project.name.includes("BigBooks DB Explorer") ? "max-w-2xl" : "max-w-lg"
+                                                )}>
                                                     <video
                                                         src={project.video}
                                                         autoPlay
                                                         loop
                                                         muted
                                                         playsInline
-                                                        className="w-full h-auto object-contain max-h-[400px]"
+                                                        className={cn(
+                                                            "w-full h-auto object-contain",
+                                                            project.name.includes("Repo Rover") || project.name.includes("BigBooks DB Explorer") ? "max-h-[500px]" : "max-h-[400px]"
+                                                        )}
+                                                    />
+                                                </div>
+                                            ) : project.images ? (
+                                                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6 w-full">
+                                                    {project.images.map((img: string, i: number) => (
+                                                        <div key={i} className="border border-schematic-grid/50 rounded-lg overflow-hidden bg-black/20">
+                                                            <img
+                                                                src={img}
+                                                                alt={`${project.name} ${i + 1}`}
+                                                                className="w-full h-auto object-contain max-h-[250px]"
+                                                            />
+                                                        </div>
+                                                    ))}
+                                                </div>
+                                            ) : project.image ? (
+                                                <div className="mb-6 border border-schematic-grid/50 rounded-lg overflow-hidden bg-black/20 max-w-lg w-full">
+                                                    <img
+                                                        src={project.image}
+                                                        alt={project.name}
+                                                        className="w-full h-auto object-contain max-h-[300px]"
                                                     />
                                                 </div>
                                             ) : (
