@@ -107,6 +107,12 @@
   --shadow-color: 220 40% 2%;
   --shadow-strength: 25%;
 
+  /* Glow Colors - Dark Mode (Blue -> Purple) */
+  --glow-color-1: #0095DD;
+  --glow-color-2: #6B4C9A;
+
+  --trail-length: 120px;
+
   color-scheme: dark;
 }
 
@@ -130,6 +136,12 @@
 :root {
   color-scheme: light;
   --is-dark-mode: 0;
+
+  /* Glow Colors - Light Mode (Yellow -> Red) */
+  --glow-color-1: #FFCB00;
+  --glow-color-2: #D9004C;
+
+  --trail-length: 180px;
 
   /* Smooth Color Shifting - Light Mode Start */
   --accent-h: 209deg;

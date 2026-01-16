@@ -114,7 +114,7 @@ export const RESUME = {
             name: "Portfolio Website",
             tech: ["Next.js", "React", "Tailwind CSS", "TypeScript", "Framer Motion"],
             date: "Jan 2026",
-            description: "Interactive resume website featuring glassmorphism and dynamic theming.",
+            description: "Interactive personal portfolio. Check out what my website has to offer!",
             link: "https://github.com/SapphireSnake/Firefox-Inspired-Portfolio-Website",
             details: [
                 "Designed and built a modern, interactive portfolio using Next.js and Tailwind CSS.",
@@ -170,3 +170,49 @@ export const RESUME = {
         software: ["Visual Studio", "VS Code", "Eclipse", "GitHub", "SVN", "Git", "Office", "MATLAB", "SolidWorks"],
     },
 };
+
+// --- Tech Stack Data ---
+type Category = "Languages & Frameworks" | "Tools & Specialties";
+
+export interface TechItem {
+    name: string;
+    icon: string;
+    category: Category;
+    color: string; // Background color
+    textColor: string;
+}
+
+// Colors for Tech Stack
+const COLORS = {
+    blue: { bg: "#dbeafe", text: "#1e40af" },
+    purple: { bg: "#f3e8ff", text: "#6b21a8" },
+    orange: { bg: "#ffedd5", text: "#9a3412" },
+    green: { bg: "#dcfce7", text: "#166534" },
+};
+
+export const TECH_ITEMS: TechItem[] = [
+    // Languages & Frameworks
+    { name: "Python", icon: "https://cdn.simpleicons.org/python/3776AB", category: "Languages & Frameworks", color: COLORS.blue.bg, textColor: COLORS.blue.text },
+    { name: "C#", icon: "https://upload.wikimedia.org/wikipedia/commons/4/4f/Csharp_Logo.png", category: "Languages & Frameworks", color: COLORS.purple.bg, textColor: COLORS.purple.text },
+    { name: "Java", icon: "https://upload.wikimedia.org/wikipedia/en/3/30/Java_programming_language_logo.svg", category: "Languages & Frameworks", color: COLORS.orange.bg, textColor: COLORS.orange.text },
+    { name: "TypeScript", icon: "https://cdn.simpleicons.org/typescript/3178C6", category: "Languages & Frameworks", color: COLORS.green.bg, textColor: COLORS.green.text },
+    { name: "JavaScript", icon: "https://cdn.simpleicons.org/javascript/F7DF1E", category: "Languages & Frameworks", color: COLORS.blue.bg, textColor: COLORS.blue.text },
+    { name: "C", icon: "https://cdn.simpleicons.org/c/A8B9CC", category: "Languages & Frameworks", color: COLORS.purple.bg, textColor: COLORS.purple.text },
+    { name: "SQL", icon: "https://cdn.simpleicons.org/postgresql/4169E1", category: "Languages & Frameworks", color: COLORS.orange.bg, textColor: COLORS.orange.text },
+    { name: "React", icon: "https://cdn.simpleicons.org/react/61DAFB", category: "Languages & Frameworks", color: COLORS.green.bg, textColor: COLORS.green.text },
+    { name: "Next.js", icon: "https://cdn.simpleicons.org/nextdotjs/000000", category: "Languages & Frameworks", color: COLORS.blue.bg, textColor: COLORS.blue.text },
+    { name: "Vue.js", icon: "https://cdn.simpleicons.org/vuedotjs/4FC08D", category: "Languages & Frameworks", color: COLORS.purple.bg, textColor: COLORS.purple.text },
+    { name: "Node.js", icon: "https://cdn.simpleicons.org/nodedotjs/339933", category: "Languages & Frameworks", color: COLORS.orange.bg, textColor: COLORS.orange.text },
+
+    // Tools & Specialties
+    { name: "Git", icon: "https://cdn.simpleicons.org/git/F05032", category: "Tools & Specialties", color: COLORS.blue.bg, textColor: COLORS.blue.text },
+    { name: "GitHub", icon: "https://cdn.simpleicons.org/github/181717", category: "Tools & Specialties", color: COLORS.purple.bg, textColor: COLORS.purple.text },
+    { name: "MySQL", icon: "https://cdn.simpleicons.org/mysql/4479A1", category: "Tools & Specialties", color: COLORS.orange.bg, textColor: COLORS.orange.text },
+    { name: "MongoDB", icon: "https://cdn.simpleicons.org/mongodb/47A248", category: "Tools & Specialties", color: COLORS.green.bg, textColor: COLORS.green.text },
+    { name: "Visual Studio", icon: "https://upload.wikimedia.org/wikipedia/commons/2/2c/Visual_Studio_Icon_2022.svg", category: "Tools & Specialties", color: COLORS.blue.bg, textColor: COLORS.blue.text },
+    { name: "VS Code", icon: "https://upload.wikimedia.org/wikipedia/commons/9/9a/Visual_Studio_Code_1.35_icon.svg", category: "Tools & Specialties", color: COLORS.purple.bg, textColor: COLORS.purple.text },
+    { name: "Machine Learning", icon: "https://cdn.simpleicons.org/tensorflow/FF6F00", category: "Tools & Specialties", color: COLORS.orange.bg, textColor: COLORS.orange.text },
+    { name: "Computer Vision", icon: "https://cdn.simpleicons.org/opencv/5C3EE8", category: "Tools & Specialties", color: COLORS.green.bg, textColor: COLORS.green.text },
+    { name: "CI/CD", icon: "https://cdn.simpleicons.org/githubactions/2088FF", category: "Tools & Specialties", color: COLORS.blue.bg, textColor: COLORS.blue.text },
+    { name: "Technical Docs", icon: "https://cdn.simpleicons.org/markdown/000000", category: "Tools & Specialties", color: COLORS.purple.bg, textColor: COLORS.purple.text },
+];

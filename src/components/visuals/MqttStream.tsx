@@ -50,6 +50,9 @@ export function MqttStream({ side = "left" }: { side?: "left" | "right" }) {
     const [isMinimized, setIsMinimized] = useState(true); // Start minimized
     const scrollRef = useRef<HTMLDivElement>(null);
 
+    const latestLatencyRef = useRef<number>(0); // Track last logged latency
+    const latencyUpdateCountRef = useRef<number>(0); // Track consecutive updates
+
     // Real System Tracking (Left Side)
     useEffect(() => {
         if (side === "right" || !isConnected) return;
@@ -80,7 +83,31 @@ export function MqttStream({ side = "left" }: { side?: "left" | "right" }) {
                     timestamp,
                     className: colorClass
                 };
-                setMessages(prev => [...prev.slice(-50), newMessage]);
+
+                // Logic: If latency is similar (<= 2ms diff) AND we haven't updated in-place too many times
+                if (Math.abs(latency - latestLatencyRef.current) <= 2 && latencyUpdateCountRef.current < 10) {
+                    setMessages(prev => {
+                        // Find index of last latency log
+                        const lastLatencyIndex = prev.findLastIndex(m => m.topic === "sys/net/latency");
+
+                        if (lastLatencyIndex !== -1) {
+                            // Replace it
+                            const newMessages = [...prev];
+                            newMessages[lastLatencyIndex] = newMessage;
+                            return newMessages;
+                        } else {
+                            // No previous latency log found, just append
+                            return [...prev.slice(-50), newMessage];
+                        }
+                    });
+                    latencyUpdateCountRef.current += 1;
+                } else {
+                    // Significant change OR max updates reached -> New Line
+                    setMessages(prev => [...prev.slice(-50), newMessage]);
+                    latencyUpdateCountRef.current = 0; // Reset counter
+                }
+
+                latestLatencyRef.current = latency;
 
                 frameCount = 0;
                 lastUpdate = now;
@@ -106,7 +133,7 @@ export function MqttStream({ side = "left" }: { side?: "left" | "right" }) {
                     const newMessage = {
                         id,
                         topic: "usr/nav/loc",
-                        payload: `ENTERED: ${sectionName}`,
+                        payload: `${sectionName}`, // Removed "ENTERED:" prefix
                         timestamp
                     };
                     setMessages(prev => [...prev.slice(-50), newMessage]);
