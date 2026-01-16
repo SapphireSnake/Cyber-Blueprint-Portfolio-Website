@@ -15,7 +15,7 @@ const robotoMono = Roboto_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Alex Mitelman | Systems Architect",
+  title: "Alex Mitelman",
   description: "Portfolio of Alex Mitelman - IoT, Full Stack, and Embedded Systems Engineer",
 };
 

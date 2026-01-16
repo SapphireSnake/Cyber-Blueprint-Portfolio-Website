@@ -34,7 +34,7 @@ export const RESUME = {
             location: "Lewis Center, OH",
             period: "March 2025 – October 2025",
             logo: "/logos/QxSoft logo.png",
-            description: "QxSoft develops software for Coordinate Measuring Machines and I was a part of their only software development team which consisted of my senior developer and the president of the company. Because the team was so small, I was expected to manage multiple R&D projects independently while also assisting on time sensitive tasks for the main software of the company. Working in an industry where there is zero margin for error taught me how to be reliable and fulfill tasks with validation logic for task completion.",
+            description: "QxSoft develops software for Coordinate Measuring Machines and I was a part of their only software development team which consisted of my senior developer and the president of the company. Because the team was so small, I was expected to manage multiple R&D projects independently while also assisting on time-sensitive tasks for the main software of the company. Working in an industry where there is zero margin for error taught me how to be reliable and fulfill tasks with validation logic for assignment completion.",
             stack: ["IoT", "C#", "C++", "React", "BLE"],
             achievements: [],
         },

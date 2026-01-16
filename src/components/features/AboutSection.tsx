@@ -22,23 +22,23 @@ export function AboutSection() {
                     </div>
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
+                <div className="grid grid-cols-1 md:grid-cols-5 gap-6 md:gap-8">
                     {/* Left Column: Bio (Layer 2) */}
-                    <div className="md:col-span-2">
+                    <div className="md:col-span-3">
                         <div className="glass-base p-6 md:p-8 rounded-2xl h-full shadow-inner">
                             <div className="prose prose-invert max-w-none">
                                 <p className="text-lg text-schematic-secondary/90 leading-relaxed font-mono mb-6">
                                     I am a Computer Science & Engineering graduate from The Ohio State University (December 2025) specializing in Information and Computation Assurance. I have production experience at QXSOFT and JSET Automated Technologies building scalable applications with a focus on intelligent automation and IoT systems.
                                 </p>
                                 <p className="text-lg text-schematic-secondary/90 leading-relaxed font-mono">
-                                    Information and Computation Assurance is about applying principles of computing and networking to design experiments and systems with an understanding of their potential vulnerabilities. It involves applying relevant ideas of mathematics and statistics to address problems related to information assurance, and designing and conducting experiments on actual systems to analyze results and draw conclusions about potential vulnerabilities.
+                                    Information and Computation Assurance is about applying principles of computing and networking to design experiments and systems with an understanding of their potential vulnerabilities. It involves using mathematics and statistics to address problems related to information assurance, and designing and conducting experiments on actual systems to analyze results and draw conclusions about potential vulnerabilities.
                                 </p>
                             </div>
                         </div>
                     </div>
 
                     {/* Right Column: Details Card (Layer 2) */}
-                    <div className="md:col-span-1">
+                    <div className="md:col-span-2">
                         <div className="glass-base p-6 md:p-8 rounded-2xl h-full flex flex-col justify-between space-y-8 shadow-inner">
                             {/* Contact Info */}
                             <div className="space-y-4">
@@ -70,7 +70,7 @@ export function AboutSection() {
                             {/* Skills Pills */}
                             <div className="flex flex-wrap gap-2">
                                 {["Systems Architecture", "Full-Stack Engineering", "Embedded Security", "Cloud Infrastructure", "IoT Solutions"].map((skill) => (
-                                    <span key={skill} className="px-2.5 py-1 rounded-full bg-schematic-accent/10 text-schematic-accent text-[11px] font-bold font-mono border border-schematic-accent/20 whitespace-nowrap">
+                                    <span key={skill} className="px-2.5 py-1 rounded-full bg-schematic-accent/10 [.schematic-mode_&]:bg-schematic-accent/30 text-schematic-accent text-[11px] font-bold font-mono border border-schematic-accent/20 whitespace-nowrap">
                                         {skill}
                                     </span>
                                 ))}

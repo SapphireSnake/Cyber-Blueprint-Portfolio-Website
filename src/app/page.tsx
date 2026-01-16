@@ -129,7 +129,7 @@ export default function Home() {
 
                   {/* Right Column: Image (Middle Right, Overlapping) */}
                   <div className="md:w-1/2 flex justify-center md:justify-end mt-12 md:mt-0 relative">
-                    <div className="glass-base rounded-2xl p-4 flex items-center justify-center">
+                    <div className="glass-base glass-hero-override rounded-2xl p-4 flex items-center justify-center relative z-20">
                       <div className="relative w-72 h-72 md:w-[500px] md:h-[500px] group">
                         <div className="relative w-full h-full p-2">
                           <img

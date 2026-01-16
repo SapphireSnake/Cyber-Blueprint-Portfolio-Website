@@ -88,8 +88,8 @@
   /* Firefox Pizazz (Dark Mode Accent) */
 
   /* Glass Variables (Dark Mode) */
-  --glass-base-bg: rgba(255, 255, 255, 0.05);
-  /* Increased from 0.02 */
+  --glass-base-bg: rgba(255, 255, 255, 0.15);
+  /* Increased from 0.05 for less transparency */
   --glass-panel-bg: rgba(255, 255, 255, 0.06);
   /* Increased from 0.03 */
   --glass-overlay-bg: rgba(10, 10, 15, 0.3);
@@ -120,6 +120,11 @@
   /* Controlled by group-hover in Tailwind, but ensure base is visible to layout */
   background: radial-gradient(circle at var(--mouse-x) var(--mouse-y), rgba(255, 255, 255, var(--glare-opacity)) 0%, transparent 50%);
   mix-blend-mode: overlay;
+}
+
+/* Hero Override to revert opacity increase in dark mode */
+.schematic-mode .glass-hero-override {
+  --glass-base-bg: rgba(255, 255, 255, 0.05);
 }
 
 :root {
